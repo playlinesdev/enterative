@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title><th:block th:text="#{__${subject}__}" /></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p th:text="#{virtual.activation.messagePin}"></p>
+
+        <th:block th:each="line : ${lines}">
+            <p>
+                <span th:text="${line.product.displayName}" />
+            </p>
+        </th:block>
+
+        <p>
+            <th:block th:text="#{mail.sincerely}" />,
+        </p>
+        <p>
+            <img src="https://enterativeapk.tk/enterative/layout/images/Logo.png" style="max-height: 100px;" />
+        </p>        
+    </body>
+</html>

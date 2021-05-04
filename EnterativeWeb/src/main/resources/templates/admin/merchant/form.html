@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/form}">
+    <body>
+        <th:block layout:fragment="hiddenFields">
+            <input class="mdl-textfield__input" type="hidden" id="id" th:field="*{id}"/>			
+        </th:block>
+
+        <th:block layout:fragment="form_title">
+            <th:block th:text="#{base.merchant}" />&nbsp;-&nbsp;<th:block th:text="*{id}" />
+        </th:block>
+
+        <th:block layout:fragment="form_body">
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.name}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tName" autofocus="autofocus" th:field="*{name}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.cnpj}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__cnpj" type="text" id="tCNPJ" autofocus="autofocus" th:field="*{cnpj}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.cpf}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__cpf" type="text" id="tCPF" autofocus="autofocus" th:field="*{cpf}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.street}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tStreet" autofocus="autofocus" th:field="*{street}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.district}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tDistrict" autofocus="autofocus" th:field="*{district}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.city}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tCity" autofocus="autofocus" th:field="*{city}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.state}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__uf" type="text" id="tState" autofocus="autofocus" th:field="*{state}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.cep}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__cep" type="text" id="tCEP" autofocus="autofocus" th:field="*{cep}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.phone}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__phone" type="text" id="tPhone" autofocus="autofocus" th:field="*{phone}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.contact}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tPhone" autofocus="autofocus" th:field="*{contact}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.email}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tPhone" autofocus="autofocus" th:field="*{email}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.status}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="status" th:field="*{status}">
+                                <option th:each="status : ${status_list}" th:value="${status}" th:text="#{__${status.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.observation}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tObservation" autofocus="autofocus" th:field="*{observation}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.acquiringinstitutionidentifier}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tAcquiringInstitutionIdentifier" autofocus="autofocus" th:field="*{acquiringInstitutionIdentifier}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.merchantidentifier}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tMerchantIdentifier" autofocus="autofocus" th:field="*{merchantIdentifier}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.merchantlocation}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tMerchantLocation" autofocus="autofocus" th:field="*{merchantLocation}" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.category}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="category" th:field="*{category}">
+                                <option th:each="category : ${category_list}" th:value="${category.id}" th:text="${category.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </body>
+</html>

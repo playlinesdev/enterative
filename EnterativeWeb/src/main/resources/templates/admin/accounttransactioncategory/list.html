@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="additionalHead">
+        </th:block>
+
+        <th:block layout:fragment="listHeader">
+            <form th:action="@{/admin/accounttransactioncategory}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b>Busca</b>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        Nome
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="name">Nome</label>
+                            <input class="mdl-textfield__input" type="text" id="name" th:field="*{name}" />                                    
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{base.accounttransactioncategory}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{accounttransactioncategory.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="tableBody_primary">
+            <span th:text="${obj.name}" />
+        </th:block>
+
+        <th:block layout:fragment="tableBody_secondary" />        
+    </body>
+</html>

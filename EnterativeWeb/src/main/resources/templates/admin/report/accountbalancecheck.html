@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="additionalHead">
+            <script th:src="@{/layout/js/reportprogress.js}"></script>
+            <script th:src="@{/layout/js/moment.min.js}"></script>
+        </th:block>
+        <th:block layout:fragment="conteudo">
+            <form th:action="@{/admin/report/accountbalancecheck}" id="domFormSearch" method="post" th:object="${searchForm}" target="_blank">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.accountbalancecheck}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                        <th:block th:text="#{base.removeempty}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch">
+                                <input type="checkbox" id="list-switch" class="mdl-switch__input" th:field="*{removeEmpty}" />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button" onclick="initStream()">
+                            <i class="material-icons">file_download</i><th:block th:text="#{base.generatereport}" />
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                        Log
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-left enterative-layout__divider-top">
+                        <div id="divOverview"></div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-left enterative-layout__divider-top">
+                        <div id="divLog"></div>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+    </body>
+</html>

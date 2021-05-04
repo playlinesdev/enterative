@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Relatório - Saldo Contas</title>
+        <style>
+            @page { size: A4 landscape; }
+
+            p, td {
+                font-size: 13px;
+            }
+
+            .enterative-layout__text--align-center {
+                text-align: center !important;
+            }
+
+            .enterative-layout__text--align-right {
+                text-align: right !important;
+            }
+
+            .enterative-layout-left--text {
+                text-align: left !important;
+            }
+
+            .enterative-layout__block--align-center {
+                text-align: center;
+                display: table;
+                margin: 0 auto;
+            }
+
+            .enterative-layout-list--divider-top {
+                border-top: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-right {
+                border-right: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-bottom {
+                border-bottom: 1px solid gray;
+            }
+
+            .enterative-layout-table--center-content * {
+                text-align: center !important;
+            }
+
+            .mdl-data-table {
+                position: relative;
+                border: 1px solid gray;
+                white-space:nowrap;                
+                background-color: #fff;
+                border-spacing: 0px;
+                width: 98%;
+                -fs-table-paginate: paginate;
+            }
+
+            .mdl-data-table tr {
+                position: relative;
+                height: 30px;                
+            }
+
+            .mdl-data-table td {
+                text-align: right;
+                position:relative;
+                height:30px;                
+                padding: 2px 8px;                
+                vertical-align: middle;
+            }
+
+            .mdl-data-table th {
+                position:relative;
+                vertical-align:bottom;                
+                font-weight:700;
+                line-height:24px;
+                letter-spacing:0;
+                height:30px;
+                font-size:12px;
+                color:rgba(0,0,0,.54);                             
+                padding: 0 8px 2px 8px;
+                text-align: right
+            }
+
+            .odd {
+                background-color: #f9f9f9;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="enterative-layout__block--align-center">
+            <h2>Relatório - Saldo Contas</h2>
+        </div>
+        <table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content">
+            <thead>
+                <tr>
+                    <th class="enterative-layout-list--divider-bottom">Conta</th>
+                    <th class="enterative-layout-list--divider-bottom">Saldo</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="line : ${objectList}">
+                    <tr>
+                        <td th:text="${line.name}"></td>                        
+                        <td th:text="${#numbers.formatDecimal(line.balance, 0, 'POINT', 2, 'COMMA')}"></td>
+                    </tr>
+                </th:block>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="enterative-layout-list--divider-top enterative-layout__text--align-right" th:text="#{base.total}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![balance]), 0, 'POINT', 2, 'COMMA')}"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+</html>

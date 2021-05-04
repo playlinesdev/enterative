@@ -1,0 +1,28 @@
+Descritivo dos Componentes do projeto Enterative:
+
+- EnterativeAggregator: Responsável por montar o ambiente do projeto via Mavem
+- EnterativeBusiness: Regras de negócio da aplicação
+- EnterativeCRON: Modulo responsável por comunicar com a BHN (BackHalck)
+- EnterativeDemo: Protótipo para executar testes automatizados
+- EnterativeEndpoint: Local onde ficam armazenadas as entidades do projeto
+- enterativeflutter: Versão do Spp Enterative em Flutter
+- EnterativeIonic: Versão do App Enterative em Ionic
+- EnterativeMockServer: Módulo que simula a comunicação com os servidores da BHN
+- EnterativeTest: Classes de Teste
+- EnterativeWeb: Interface web da Enterative
+- EnterativeWS: Web Service da Enterative
+- Build: Script de criação do ambiente no servidor, ou seja, tem um script para geração de versão
+
+Base de dados: MySql 14.14
+
+Nome das Bases de Dados: 
+
+- Enterative: Base de Dados principal do projeto Enterative
+- Innodb: banco do mysql
+- paymentmaneger: Base de Dados para o Enterative Pay;
+- sys: banco do mysql
+- temp: banco do mysql
+
+Provedor Web: ASW
+
+

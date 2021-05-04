@@ -1,0 +1,14 @@
+@media all {
+    @page { size: A4 landscape; }
+
+    .enterative-layout__block--align-center {
+        text-align: center;
+        display: table;
+        margin: 0 auto;
+    }
+
+    table {
+        width: calc(100% - 50px);
+        margin: 25px;
+    }
+}

@@ -1,0 +1,59 @@
+{  
+   "response":{  
+      "header":{  
+         "signature":"BHNUMS",
+         "details":{  
+            "productCategoryCode":"01",
+            "statusCode":"00",
+            "specVersion":"04"
+         }
+      },
+      "transaction":{  
+         "primaryAccountNumber":"6039534201000000024",
+         "processingCode":"745400",
+         "transactionAmount":"000000002500",
+         "transmissionDateTime":"111116173121",
+         "systemTraceAuditNumber":"000001",
+         "localTransactionTime":"153121",
+         "localTransactionDate":"111116",
+         "merchantCategoryCode":"5399",
+         "pointOfServiceEntryMode":"041",
+         "acquiringInstitutionIdentifier":"60300004684",
+         "retrievalReferenceNumber":"000000000001",
+         "authIdentificationResponse":"000000",
+         "responseCode":"00",
+         "merchantTerminalId":"00001     001   ",
+         "merchantIdentifier":"60300004684    ",
+         "transactionCurrencyCode":"986",
+         "additionalTxnFields":{  
+            "productId":"505164401188",
+            "balanceAmount":"C000000002500",
+            "redemptionPin":"ZHYR0303215     ",
+            "redemptionAccountNumber":"3086468548380538610",
+            "activationAccountNumber":"3086468548380538610",
+            "transactionUniqueId":"MYBYQYQ8VBLLVA4Q40P72N3LQC",
+            "correlatedTransactionUniqueId":"MYBYQYQ8VBLLVA4Q40P72N3LQC"
+         },
+         "receiptsFields":{  
+            "line":"Para  resgatar  seu Game Card  visite:\\n",
+            "line":"1. www.facebook.com/gamecards/redeem  \\n",
+            "line":"2 Raspe o rotulo e insira o Codigo PIN\\n",
+            "line":"3. Jogue no Facebook.   Aproveite.",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":"",
+            "line":""
+         },
+         "termsAndConditions":"O uso deste cartao constitui na aceitacao destes termos e condicoes este cartao so pode ser resgatado no Facebook por pessoas acima dos 13 anos. Para resgata lo visite www.facebook.com/gamecards/redeem. O acesso a internet e necessario (pode ter custos adicionais). O valor completo do cartao e deduzido na insercao do PIN. Nao e permitida deducao adicional. Nao e resgatavel em dinheiro e nao pode ser devolvido para reembolso, trocado ou revendido (exceto quando exigido por lei). A data da emissao do cartao e a da compra no recibo. Nenhum reembolso ou credito sera fornecido por cartoes perdidos, roubados, destruidos ou usados sem permissão. A utilizacao deste cartao e regida pelos Termos de Pagamento do Facebook, disponiveis em www.facebook.com/payments_terms e sujeitos a alteracoes de tempos em tempos sem aviso prévio, na medida permitida por lei. Proteja este cartao como se fosse dinheiro. Este cartao e emitido pelo Facebook Payments Inc., uma corporacao da Florida."
+      }
+   }
+}

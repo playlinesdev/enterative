@@ -1,0 +1,1 @@
+ALTER TABLE sale_order ADD COLUMN receipt_count INT(4) DEFAULT 0;

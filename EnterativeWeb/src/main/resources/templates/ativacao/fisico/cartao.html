@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt_br" 
+      xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="additionalHead">
+            <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+            <script type="text/javascript" th:src="@{/layout/js/quagga.js}"></script>
+            <script type="text/javascript" th:src="@{/layout/js/barcodescanner.js}"></script>
+            <style>
+                #interactive.viewport {position: relative; width: 100%; height: auto; overflow: hidden; text-align: center;}
+                #interactive.viewport > canvas, #interactive.viewport > video {max-width: 100%;width: 100%;}
+                canvas.drawing, canvas.drawingBuffer {position: absolute; left: 0; top: 0;}
+            </style>
+        </th:block>
+        <div layout:fragment="conteudo">
+            <div class="painel__form enterative-layout__block--align-center" style="max-width: 600px" id="cartaoForm">
+                <form th:action="@{/ativacao/fisico/ativarCartao}" method="post" th:object="${cartao}">
+                    <img style="width: 100%; height: 100%" th:src="@{/layout/images/cartao_fisico.png}" />
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop">
+                            <div class="mdl-textfield mdl-js-textfield enterative-form__barcode">
+                                <input class="mdl-textfield__input" type="text" id="cardNo" autofocus="autofocus" name="barcode" th:field="*{barcode}" /> 
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" th:value="#{base.activatecard}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect form__componente_field" style="max-width: 600px"  />
+                </form>
+                <div class="mdl-cell--hide-desktop">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect form__componente_field" type="button" onclick="showScan()">
+                        <i class="material-icons">camera</i> Capturar código de Barras
+                    </button>
+                </div>
+            </div>            
+            <div class="painel__form enterative-layout__modal--center" id="livestream_scanner">
+                <div class="enterative-layout__modal-body">
+                    <div class="mdl-spinner mdl-js-spinner is-active enterative-layout__block--align-center" id="livestream_loader"></div>
+                    <div id="interactive" class="viewport"></div>
+                    <div id="scanner_error"></div>
+                </div>
+                <div class="enterative-layout__modal-footer">                            
+                    <button type="button" class="btn btn-primary" onclick="hideScan()">Close</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

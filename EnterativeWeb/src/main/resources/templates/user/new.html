@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="additionalHead" />
+
+        <th:block layout:fragment="conteudo">
+            <div class="mdl-grid mdl-grid--no-spacing" th:if="${activeObject eq null}">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <th:block th:text="#{user.new}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-newuser__welcome">
+                    <th:block th:text="#{user.successfulregistration.1}" /><br /><th:block th:text="#{user.successfulregistration.2}" /><br /><th:block th:text="#{user.successfulregistration.3}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                    <a th:href="@{/}">
+                        <span class="mdl-button"><i class="material-icons mdl-color-text--blue">home</i><th:block th:text="#{menu.home}" /></span>
+                    </a>
+                </div>
+            </div>
+            <form th:action="@{/user/new}" method="post" th:object="${activeObject}" id="crud_form" th:if="${activeObject ne null}">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block th:text="#{user.new}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-newuser__welcome">
+                        <th:block th:text="#{user.welcomemessage.1}" /><br /><th:block th:text="#{user.welcomemessage.2}" />
+                    </div>
+                    <div th:if="${errorMessage != null}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__error">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center">
+                                <i class="material-icons mdl-color-text--red">error</i>
+                            </div>
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--10-col-desktop enterative-layout__text--align-center">
+                                <th:block th:utext="#{__${errorMessage}__}" th:if="${translated eq false}" />
+                                <th:block th:utext="${errorMessage}" th:if="${translated eq true}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center"></div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop" th:if="*{partner ne null}">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                                <th:block th:text="#{base.partner}" />
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-left  enterative-form__field-label">
+                                <input type="hidden" th:field="*{partner.id}" />
+                                <input type="hidden" th:field="*{partner.name}" />
+                                <th:block th:text="*{partner.name}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                                <th:block th:text="#{base.name}" />&nbsp;<span class="enterative-layout-crudform__required">(*)</span>
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-left">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="tName" autofocus="autofocus" th:field="*{name}" />
+                                    <label class="mdl-textfield__label" for="tName"><th:block th:text="#{base.name}" /></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                                <th:block th:text="#{login.username}" />&nbsp;<span class="enterative-layout-crudform__required">(*)</span>
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-left">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="tLogin" autofocus="autofocus" th:field="*{login}" />
+                                    <label class="mdl-textfield__label" for="tLogin"><th:block th:text="#{login.username}" /></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                                <th:block th:text="#{login.password}" />&nbsp;<span class="enterative-layout-crudform__required">(*)</span>
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-left">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="password" id="tPassword" autofocus="autofocus" th:field="*{password}" />
+                                    <label class="mdl-textfield__label" for="tPassword"><th:block th:text="#{login.password}" /></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop" th:if="${activeObject.id eq null}">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                                <th:block th:text="#{user.confirmpassword}" />&nbsp;<span class="enterative-layout-crudform__required">(*)</span>
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-left">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="password" id="tPasswordMatch" autofocus="autofocus" th:field="*{passwordMatch}" />
+                                    <label class="mdl-textfield__label" for="tPasswordMatch"><th:block th:text="#{user.confirmpassword}" /></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                                <th:block th:text="#{base.email}" />&nbsp;<span class="enterative-layout-crudform__required">(*)</span>
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-left">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="tEmail" autofocus="autofocus" th:field="*{email}" />
+                                    <label class="mdl-textfield__label" for="tEmail"><th:block th:text="#{base.email}" /></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-right enterative-form__field-label">
+                                <th:block th:text="#{user.confirmemail}" />&nbsp;<span class="enterative-layout-crudform__required">(*)</span>
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-left">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="tConfirmEmail" autofocus="autofocus" th:field="*{emailMatch}" />
+                                    <label class="mdl-textfield__label" for="tConfirmEmail"><th:block th:text="#{user.confirmemail}" /></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                        <button type="submit" class="mdl-button enterative-layout-crudform__oneclick"><i class="material-icons mdl-color-text--green">save</i><th:block th:text="#{base.submit}" /></button>
+                        <a th:href="@{/}">
+                            <span class="mdl-button"><i class="material-icons mdl-color-text--blue">home</i><th:block th:text="#{menu.home}" /></span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+    </body>
+</html>

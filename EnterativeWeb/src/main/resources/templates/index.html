@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <div class="mdl-grid mdl-shadow--2dp enterative-form__excerpt" th:if="${accountBalance}">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <th:block th:text="#{account.balance}" />
+                </div>
+                <div th:text="${'R$ ' + #numbers.formatDecimal(accountBalance,0,'POINT',2, 'COMMA')}" th:classappend="${accountBalance le 0} ? mdl-color-text--red : mdl-color-text--green" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center"></div>
+            </div>
+            <div class="mdl-grid mdl-shadow--2dp enterative-form__balancethreshold" th:if="${accountBalance ne null and balanceThreshold ge accountBalance}">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <i class="material-icons">report_problem</i><br />
+                    <th:block th:text="#{index.balancethreshold.1}" /><br />
+                    <th:block th:text="#{index.balancethreshold.2}" />
+                </div>
+            </div>
+        </div>
+        <th:block layout:fragment="additional_footer">
+            <div class="mdl-mega-footer enterative-footer-revenda" sec:authorize="not isAuthenticated()">
+                <div class="mdl-mega-footer__middle-section enterative-layout__text--align-center">
+                    <a th:href="@{/user/new}" class="mdl-button mdl-js-button enterative-footer-new-user__button" target="_self">
+                        <i class="material-icons enterative-material-icons">card_membership</i>
+                        <th:block th:text="#{home.newusermesssage}" />
+                    </a>
+                </div>
+            </div>
+            <div class="mdl-mega-footer enterative-footer-revenda">
+                <div class="mdl-mega-footer__middle-section enterative-layout__text--align-center">
+                    <a href="https://www.enterative.com.br/credenciamento" class="mdl-button mdl-js-button enterative-footer-revenda__button" target="_blank">
+                        <i class="material-icons enterative-material-icons">open_in_new</i>
+                        <th:block th:text="#{home.becomeareseller}" />
+                    </a>
+                </div>
+            </div>
+        </th:block>
+    </body>
+</html>

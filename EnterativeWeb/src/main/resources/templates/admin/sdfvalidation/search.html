@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>        
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{base.sdfvalidation}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{sdfvalidation.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="listHeader">
+            <form th:action="@{/admin/sdfvalidation}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.search}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.name}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="name" th:field="*{name}" />                            
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.creationdate}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__date" type="text" id="createdAt" th:field="*{createdAt}" />
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.status}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="tStatus"><th:block th:text="#{base.status}" /></label>
+                            <select class="mdl-textfield__input" id="tStatus" th:field="*{status}">
+                                <option value=""></option>
+                                <option th:each="s : ${status_list}" th:value="${s}" th:text="#{__${s.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+        <th:block layout:fragment="tableBody">
+            <li class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">                    
+                    <span>
+                        <th:block th:text="${obj.name}" />
+                    </span>
+                    <span class="mdl-list__item-text-body">
+                        <th:block th:text="${#dates.format(obj.createdAt, 'dd/MM/yyyy HH:mm')}" />                
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a id="aDownload_" th:attrappend="id=${obj.id}" th:href="@{/admin/sdfvalidation/report/{id}(id=${obj.id})}" class="mdl-button mdl-js-button mdl-js-ripple-effect" th:if="${obj.status == T(br.com.chart.enterative.enums.SDF_FILE_STATUS).DONE}">
+                        <i class="material-icons">file_download</i>
+                    </a>
+                    <span class="mdl-tooltip mdl-tooltip--large" for="aDownload_" th:attrappend="for=${obj.id}" th:text="#{base.generatereport}" />
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a id="aValidate_" th:attrappend="id=${obj.id}" th:href="@{/admin/sdfvalidation/assemble/{id}(id=${obj.id})}" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        <i class="material-icons">playlist_add_check</i>
+                    </a>
+                    <span class="mdl-tooltip mdl-tooltip--large" for="aValidate_" th:attrappend="for=${obj.id}" th:text="#{base.validatefile}" />
+                </span>
+                <span class="mdl-list__item-secondary-content">                    
+                    <i id="iPending_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--blue" th:if="${obj.status == T(br.com.chart.enterative.enums.SDF_FILE_STATUS).PENDING}">alarm</i>
+                    <span class="mdl-tooltip mdl-tooltip--large" for="iPending_" th:attrappend="for=${obj.id}" th:text="#{base.pending}" />
+
+                    <i id="iInProgress_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--amber" th:if="${obj.status == T(br.com.chart.enterative.enums.SDF_FILE_STATUS).IN_PROGRESS}">done</i>
+                    <span class="mdl-tooltip mdl-tooltip--large" for="iInProgress_" th:attrappend="for=${obj.id}" th:text="#{base.inprogress}" />
+
+                    <i id="iDone_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--green" th:if="${obj.status == T(br.com.chart.enterative.enums.SDF_FILE_STATUS).DONE}">done_all</i>
+                    <span class="mdl-tooltip mdl-tooltip--large" for="iDone_" th:attrappend="for=${obj.id}" th:text="#{base.done}" />
+
+                    <i id="iError_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--red" th:if="${obj.status == T(br.com.chart.enterative.enums.SDF_FILE_STATUS).ERROR}">error</i>
+                    <span class="mdl-tooltip mdl-tooltip--large" for="iError_" th:attrappend="for=${obj.id}" th:text="#{base.error}" />                    
+                </span>
+            </li>
+        </th:block>
+    </body>
+</html>

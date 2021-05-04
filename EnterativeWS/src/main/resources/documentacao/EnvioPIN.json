@@ -1,0 +1,29 @@
+{  
+   "header":{  
+      "details":{  
+         "productCategoryCode":"01",
+         "specVersion":"04"
+      },
+      "signature":"BHNUMS"
+   },
+   "transaction":{  
+      "acquiringInstitutionIdentifier":"60300004684",
+      "additionalTxnFields":{  
+         "productId":"505164401188"
+      },
+      "localTransactionDate":"111116",
+      "localTransactionTime":"153121",
+      "merchantCategoryCode":"5399",
+      "merchantIdentifier":"60300004684    ",
+      "merchantLocation":"                      Campo Grande MS BR",
+      "merchantTerminalId":"00001     001   ",
+      "pointOfServiceEntryMode":"041",
+      "primaryAccountNumber":"6039534201000000024",
+      "processingCode":"745400",
+      "retrievalReferenceNumber":"000000000001",
+      "systemTraceAuditNumber":"000001",
+      "transactionAmount":"000000002500",
+      "transactionCurrencyCode":"986",
+      "transmissionDateTime":"111116173121"
+   }
+}

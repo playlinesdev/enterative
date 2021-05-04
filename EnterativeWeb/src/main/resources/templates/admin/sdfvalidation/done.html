@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="conteudo">
+            <div class="mdl-grid mdl-grid--no-spacing mdl-cell--hide-phone mdl-cell--hide-tablet">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <i class="material-icons mdl-color-text--green">done_all</i><th:block th:text="#{base.filevalidatedsuccessfully_}" />
+                </div>
+                <th:block th:if="${sdfSummary.different eq true}">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <p class="enterative-layout__block--align-center" th:text="#{base.filevalidatedsuccessfully.1}"></p>
+                        <p class="enterative-layout__block--align-center" th:text="#{base.filevalidatedsuccessfully.2}"></p>
+                    </div>
+                </th:block>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                    <a th:href="@{/admin/sdfvalidation/report/{id}(id=${sdfFile.id})}"><span class="mdl-button"><i class="material-icons mdl-color-text--blue">file_download</i><th:block th:text="#{base.generatereport}" /></span></a>
+                    <a th:href="@{/admin/sdfvalidation}"><span class="mdl-button"><i class="material-icons mdl-color-text--green">chevron_left</i><th:block th:text="#{base.return}" /></span></a>
+                </div>
+            </div>
+        </th:block>
+    </body>
+</html>

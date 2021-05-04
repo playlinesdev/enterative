@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+<body>
+<th:block layout:fragment="additionalHead">
+    <script th:src="@{/layout/js/fileupload.js}"></script>
+</th:block>
+<div layout:fragment="conteudo">
+    <form th:action="@{/{path}(path=${saveActionPath})}" method="post" th:object="${activeObject}" id="crud_form" enctype="multipart/form-data">
+        <input class="mdl-textfield__input" type="hidden" id="id" th:field="*{id}"/>
+        <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                <th:block th:text="#{base.fileupload}"/>&nbsp;-&nbsp;<th:block th:text="*{id}"/>
+            </div>
+            <th:block layout:fragment="form_error">
+                <div th:if="${errorMessage != null}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__error">
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center">
+                            <i class="material-icons mdl-color-text--red">error</i>
+                        </div>
+                        <div class="mdl-cell mdl-cell--3-col-phone mdl-cell--5-col-tablet mdl-cell--11-col-desktop enterative-layout__text--align-center">
+                            <th:block th:utext="${errorMessage}" />
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.name}"/>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tName" autofocus="autofocus"
+                                   th:field="*{name}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.type}"/>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="type" th:field="*{type}">
+                                <option th:each="type : ${type_list}" th:value="${type}"
+                                        th:text="#{__${type.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.objectid}"/>
+                        <th:block th:if="*{objectID ne null}">
+                            [<th:block th:text="*{objectID}" />]
+                        </th:block>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--6-col-tablet mdl-cell--5-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <div id="loader" class="mdl-spinner mdl-js-spinner is-active" style="display: none;"></div>
+                            <select class="mdl-textfield__input" id="objectid" th:field="*{objectID}">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <a href="#" onclick="retrieveObjects()" id="aObjects">
+                                <i class="material-icons">youtube_searched_for</i>
+                            </a>
+                            <span class="mdl-tooltip mdl-tooltip--large" for="aObjects">Procurar Objetos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.file}"/>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="file" id="tFile" autofocus="autofocus" th:field="*{file}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop" th:if="*{id ne null}">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.file}"/>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <th:block th:if="*{type eq T(br.com.chart.enterative.enums.FILE_TYPE).PRODUCT_IMAGE}">
+                                <img th:src="*{'data:image/png;base64, ' + fileData}" style="max-width: 100px;" />
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                <button th:if="${saveActionPath != null}" class="mdl-button" sec:authorize="hasRole('ROLE_ADMIN')"><i class="material-icons mdl-color-text--green">save</i><th:block th:text="#{base.save}" /></button>
+                <a th:href="@{/{path}(path=${crudHomePath})}"><span class="mdl-button"><i class="material-icons mdl-color-text--blue">chevron_left</i><th:block th:text="#{base.return}" /></span></a>
+                <th:block layout:fragment="form_actions" />
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

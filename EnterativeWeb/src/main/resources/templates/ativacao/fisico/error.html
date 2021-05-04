@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <form th:action="@{/{path}(path=${cartao.retryAction})}" method="post" th:object="${cartao}">
+                <input class="mdl-textfield__input" type="hidden" id="barcode" th:field="*{barcode}"/>
+                <input class="mdl-textfield__input" type="hidden" id="ean" th:field="*{ean}"/>
+                <input class="mdl-textfield__input" type="hidden" id="cardNo" th:field="*{cardNo}"/>
+                <input class="mdl-textfield__input" type="hidden" id="produto" th:field="*{produto}"/>
+                <input class="mdl-textfield__input" type="hidden" id="produtoImagem" th:field="*{produtoImagem}"/>
+                <input class="mdl-textfield__input" type="hidden" id="valor" th:field="*{valor}"/>
+                <input class="mdl-textfield__input" type="hidden" id="numeroPedido" th:field="*{numeroPedido}"/>
+                <input class="mdl-textfield__input" type="hidden" id="statusPedido" th:field="*{statusPedido}"/>
+                <input class="mdl-textfield__input" type="hidden" id="resposta" th:field="*{resposta}"/>
+                <input class="mdl-textfield__input" type="hidden" id="respostaAux" th:field="*{respostaAux}" />
+                <div class="mdl-grid">
+                    <div class="enterative-error__card enterative-layout__block--align-center mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+                        <div class="mdl-card__title mdl-card--expand">
+                            <h2 class="mdl-card__title-text enterative-layout__block--align-center"><i class="material-icons mdl-color-text--red">error</i><th:block th:text="#{activation.anerroroccurred_}" /></h2>
+                        </div>
+                        <div class="mdl-card__supporting-text enterative-card__supporting-text">
+                            <span th:text="${cartao.errorMessage}" th:remove="tag"></span>
+                        </div>
+                        <div class="mdl-card__actions enterative-layout__block--align-center">
+                            <button type="submit" class="mdl-button">
+                                <i class="material-icons mdl-color-text--green">refresh</i><th:block th:text="#{activation.tryagain}" />
+                            </button>
+                            <a th:href="@{/}">
+                                <span class="mdl-button"><i class="material-icons mdl-color-text--red">clear</i><th:block th:text="#{activation.cancel}" /></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

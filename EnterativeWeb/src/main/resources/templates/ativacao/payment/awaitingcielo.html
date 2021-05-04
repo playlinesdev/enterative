@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="additionalHead">
+            <script th:src="@{/layout/js/cielo_await.js}"></script>
+        </th:block>
+
+        <th:block layout:fragment="conteudo">
+            <form>
+                <input type="hidden" th:value="${paymentUrl}" id="paymentUrl" />
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block th:text="#{activation.awaitingpayment}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-newuser__welcome">
+                        <th:block th:text="#{activation.awaitingcielo}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-newuser__welcome">
+                        <div class="mdl-spinner mdl-js-spinner is-active enterative-layout__block--align-center"></div>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+    </body>
+</html>

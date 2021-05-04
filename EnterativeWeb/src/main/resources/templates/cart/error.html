@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <div class="mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <i class="material-icons mdl-color-text--red">error</i>
+                </div>
+                <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--10-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <th:block th:text="#{base.error}" />
+                </div>
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__title">      
+                    <i class="material-icons mdl-color-text--red">error</i>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <th:block th:text="${message}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                    <a th:href="@{/cart}"><span class="mdl-button"><i class="material-icons mdl-color-text--green">shopping_cart</i><th:block th:text="#{base.shoppingcart}" /></span></a>                    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

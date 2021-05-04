@@ -1,0 +1,2 @@
+INSERT INTO shop_transaction (amount, type, status, transaction_date, web_user_id, sale_order_line_id, shop_id) 
+(SELECT l.valitem, 1, l.status, l.data_retorno, o.web_user_id, l.id, u.shop_id FROM sale_order_line l LEFT JOIN sale_order o ON o.id = l.sale_order_id LEFT JOIN web_user u ON u.id = o.web_user_id)

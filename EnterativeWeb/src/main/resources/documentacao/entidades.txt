@@ -1,0 +1,91 @@
+Pedido
+id <Long>
+dataincl <Date>
+usuario <Usuario>
+valtotal <BigDecimal>
+status <STATUS_PEDIDO>
+tipo <TIPO_PEDIDO>
+
+--------------------------------------------------------------------------
+ItemPedido
+idpedido
+numitem <int>
+status <STATUS_ITEM_PEDIDO>
+situacao <String>
+produto <Produto>
+ean <String>
+cardNo <String>
+gcCodBarra <String>
+valitem <BigDecimal>
+ativacao <int> (relacionamento fraco com Ativacao)
+resposta <String>
+dataRetorno <Date>
+pin <String>
+
+
+
+--------------------------------------------------------------------------
+Produto
+id <Long>
+ean <String>
+descricao <String>
+codigoProdutoFornecedor <String>
+fornecedor <Fornecedor>
+dataincl <Date>
+dataalte <Date>
+categoria <Categoria>
+valorDeFace <BigDecimal>
+perComissao <BigDecimal>
+valComissao <BigDecimal>
+taxaAtivacao <BigDecimal>
+agrupamento <Agrupamento> not null (Categoria do produto que exibe na tela)
+
+
+--------------------------------------------------------------------------
+Agrupamento
+id <String>
+descricao <String>
+agrupamentoPai <Agrupamento>
+
+--------------------------------------------------------------------------
+Categoria
+id <Long>
+descricao <String>
+
+--------------------------------------------------------------------------
+Fornecedor
+id <Long>
+nome <String>
+
+--------------------------------------------------------------------------
+Distribuidor
+id <Long>
+nome <String>
+cnpj <String>
+cpf <String>
+endereco <String>
+bairro <String>
+cidade <String>
+estado <String>
+cep <String>
+telefone <String>
+contato <String>
+email <String>
+situacao <String>
+dataIncl <Date>
+dataAlte <Date>
+observacao <String>
+acquiringInstitutionIdentifier <String>
+merchantIdentifier <String>
+merchantLocation <String>
+merchantCategoryCode <String>
+pointOfServiceEntryMode <String>
+
+--------------------------------------------------------------------------
+Usuario
+id <Long>
+nome <String>
+login <String>
+senha <String>
+iddistribuidor <Distribuidor>
+situacao <String>

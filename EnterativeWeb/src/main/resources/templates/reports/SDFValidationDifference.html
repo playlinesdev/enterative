@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Relatório de Divergências</title>
+        <style>
+            @page { size: A4 landscape; }
+
+            p, td {
+                font-size: 13px;
+            }
+
+            .enterative-layout__text--align-center {
+                text-align: center !important;
+            }
+
+            .enterative-layout-left--text {
+                text-align: left !important;
+            }
+
+            .enterative-layout__block--align-center {
+                text-align: center;
+                display: table;
+                margin: 0 auto;
+            }
+
+            .enterative-layout-list--divider-top {
+                border-top: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-right {
+                border-right: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-bottom {
+                border-bottom: 1px solid gray;
+            }
+
+            .enterative-layout-table--center-content * {
+                text-align: center !important;
+            }
+
+            .mdl-data-table {
+                position: relative;
+                border: 1px solid gray;
+                white-space:nowrap;                
+                background-color: #fff;
+                border-spacing: 0px;
+                width: 98%;
+            }
+            
+            .mdl-data-table tr {
+                position: relative;
+                height: 30px;                
+            }
+            
+            .mdl-data-table td {
+                text-align: right;
+                position:relative;
+                height:30px;                
+                padding: 2px 8px;                
+                vertical-align: middle;
+            }
+            
+            .mdl-data-table th {
+                position:relative;
+                vertical-align:bottom;                
+                font-weight:700;
+                line-height:24px;
+                letter-spacing:0;
+                height:30px;
+                font-size:12px;
+                color:rgba(0,0,0,.54);                             
+                padding: 0 8px 2px 8px;
+                text-align: right
+            }
+            
+            .odd {
+                background-color: #f9f9f9;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="enterative-layout__block--align-center">
+            <h2>Relatório de Divergências</h2>
+        </div>
+        <table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content" th:object="${sdfFile.header}">
+            <thead>
+                <tr>
+                    <th colspan="5" class="enterative-layout__text--align-center enterative-layout-list--divider-bottom"><h3>Detalhes do SDF</h3></th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Transmission Date (1)</th>
+                    <th>Reporting Date (1)</th>
+                    <th>Partner ID</th>
+                    <th>Partner Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td th:text="${sdfFile.name}"></td>
+                    <td th:text="${#dates.format(sdfFile.header.fileTransmissionDate, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${#dates.format(sdfFile.header.fileReportingDate, 'dd/MM/yyyy')}"></td>
+                    <td th:text="*{partnerId}"></td>
+                    <td th:text="*{partnerName}"></td>
+                </tr>
+            </tbody>            
+        </table>
+        <br />
+        <table class="mdl-data-table enterative-layout__block--align-center" th:unless="${#lists.isEmpty(details)}">
+            <thead>
+                <tr>
+                    <th colspan="8" class="enterative-layout__text--align-center enterative-layout-list--divider-bottom"><h3>Transações do SDF</h3></th>
+                </tr>
+                <tr>
+                    <th class="enterative-layout-list--divider-right">Merchant ID</th>
+                    <th class="enterative-layout-list--divider-right">Merchant Name</th>
+                    <th class="enterative-layout-list--divider-right">Store ID</th>
+                    <th class="enterative-layout-list--divider-right">Terminal ID</th>
+                    <th class="enterative-layout-list--divider-right">Clerk ID</th>
+                    <th class="enterative-layout-list--divider-right">Card Issuer ID</th>
+                    <th class="enterative-layout-list--divider-right">Card Issuer Processor ID</th>
+                    <th>Acquirer ID</th>
+                </tr>
+                <tr>                    
+                    <th class="enterative-layout-list--divider-right">Acquired Date (1)</th>
+                    <th class="enterative-layout-list--divider-right">Acquired Time (2)</th>
+                    <th class="enterative-layout-list--divider-right">Gift Card Number</th>
+                    <th class="enterative-layout-list--divider-right">Product ID</th>
+                    <th class="enterative-layout-list--divider-right">POS Date (1)</th>
+                    <th class="enterative-layout-list--divider-right">POS Time (2)</th>
+                    <th class="enterative-layout-list--divider-right">Transaction Type</th>
+                    <th>STAN (3)</th>                    
+                </tr>
+                <tr>
+                    <th class="enterative-layout-list--divider-right">Product Item Price</th>
+                    <th class="enterative-layout-list--divider-right">Currency Code</th>
+                    <th class="enterative-layout-list--divider-right">Merchant Transaction ID</th>
+                    <th class="enterative-layout-list--divider-right">BHN Transaction ID</th>
+                    <th class="enterative-layout-list--divider-right">Auth Response Code</th>
+                    <th class="enterative-layout-list--divider-right">Approval Code</th>
+                    <th class="enterative-layout-list--divider-right">Reversal Type Code</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>                    
+                    <th class="enterative-layout-list--divider-right">Consumer Fee</th>
+                    <th class="enterative-layout-list--divider-right">Commission</th>
+                    <th class="enterative-layout-list--divider-right">Tax Transaction</th>
+                    <th class="enterative-layout-list--divider-right">Tax Commission</th>
+                    <th class="enterative-layout-list--divider-right">Net Amount</th>
+                    <th class="enterative-layout-list--divider-right"></th>
+                    <th class="enterative-layout-list--divider-right"></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="detail,iterStat : ${details}">
+                    <tr th:class="${iterStat.odd} ? odd">
+                        <td th:text="${detail.merchantId}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${detail.merchantName}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${detail.storeId}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${detail.terminalId}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${detail.clerkId}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${detail.cardIssuerId}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${detail.cardIssuerProcessorId}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${detail.acquirerId}" class="enterative-layout-list--divider-top"></td>
+                    </tr>
+                    <tr th:class="${iterStat.odd} ? odd">                        
+                        <td class="enterative-layout-list--divider-right" th:text="${#dates.format(detail.acquiredTransactionDate, 'dd/MM/yyyy')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#dates.format(detail.acquiredTransactionTime, 'HH:mm:ss')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.giftCardNumber}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.productId}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#dates.format(detail.posTransactionDate, 'dd/MM/yyyy')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#dates.format(detail.posTransactionTime, 'HH:mm:ss')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.transactionType}"></td>
+                        <td th:text="${detail.systemTraceAuditNumber}"></td>                        
+                    </tr>
+                    <tr th:class="${iterStat.odd} ? odd">
+                        <td class="enterative-layout-list--divider-right" th:text="${#numbers.formatDecimal(detail.productItemPrice, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.currencyCode}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.merchantTransactionId}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.bhnTransactionId}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.authResponseCode}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.approvalCode}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${detail.reversalTypeCode}"></td>
+                        <td th:text="${#numbers.formatDecimal(detail.transactionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                    </tr>
+                    <tr th:class="${iterStat.odd} ? odd">                        
+                        <td class="enterative-layout-list--divider-right" th:text="${#numbers.formatDecimal(detail.consumerFeeAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#numbers.formatDecimal(detail.commissionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#numbers.formatDecimal(detail.totalTaxTransactionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#numbers.formatDecimal(detail.totalTaxCommissionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#numbers.formatDecimal(detail.netAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td class="enterative-layout-list--divider-right"></td>
+                        <td class="enterative-layout-list--divider-right"></td>
+                        <td></td>
+                    </tr>
+                </th:block>
+            </tbody>            
+        </table>
+        <br/>
+        <table class="mdl-data-table enterative-layout__block--align-center" th:unless="${#lists.isEmpty(transactions)}">
+            <thead>
+                <tr>
+                    <th colspan="8" class="enterative-layout__text--align-center enterative-layout-list--divider-bottom"><h3>Transações da Enterative</h3></th>
+                </tr>
+                <tr>
+                    <th class="enterative-layout-list--divider-right">Response Code</th>
+                    <th class="enterative-layout-list--divider-right">Auth Response</th>
+                    <th class="enterative-layout-list--divider-right">NMC (4)</th>
+                    <th class="enterative-layout-list--divider-right">Local Date (1)</th>
+                    <th class="enterative-layout-list--divider-right">Local Time (2)</th>
+                    <th class="enterative-layout-list--divider-right">Trasmission Date Time (5)</th>
+                    <th colspan="2">TUI (9)</th>
+
+                </tr>
+                <tr>
+                    <th class="enterative-layout-list--divider-right">Amount</th>
+                    <th class="enterative-layout-list--divider-right">Product ID</th>
+                    <th class="enterative-layout-list--divider-right">PCC (6)</th>
+                    <th class="enterative-layout-list--divider-right">Status Code</th>
+                    <th class="enterative-layout-list--divider-right">Primary Account Number</th>
+                    <th class="enterative-layout-list--divider-right">Merchant Terminal ID</th>
+                    <th colspan="2">CTUI(10)</th>                    
+                </tr>
+                <tr>
+                    <th class="enterative-layout-list--divider-right">AAN (8)</th>
+                    <th class="enterative-layout-list--divider-right">Return Date (5)</th>
+                    <th class="enterative-layout-list--divider-right">STAN (3)</th>                    
+                    <th class="enterative-layout-list--divider-right">Redemption PIN</th>                    
+                    <th class="enterative-layout-list--divider-right">RAN (7)</th>
+                    <th class="enterative-layout-list--divider-right">Currency Code</th>
+                    <th colspan="2">Activation Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="transaction,iterStat : ${transactions}">
+                    <tr th:class="${iterStat.odd} ? odd">
+                        <td th:text="${transaction.responseCode}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${transaction.authIdentificationResponse}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${transaction.networkManagementCode}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${transaction.localTransactionDate}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${transaction.localTransactionTime}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td th:text="${transaction.transmissionDateTime}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <td class="enterative-layout-list--divider-top" colspan="2" th:text="${transaction.transactionUniqueId}"></td>
+                    </tr>
+                    <tr th:class="${iterStat.odd} ? odd">
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.transactionAmount}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.productId}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.productCategoryCode}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.statusCode}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.primaryAccountNumber}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.merchantTerminalId}"></td>
+                        <td colspan="2" th:text="${transaction.correlatedTransactionUniqueId}"></td>
+                    </tr>
+                    <tr th:class="${iterStat.odd} ? odd">
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.activationAccountNumber}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${#dates.format(transaction.transactionReturnDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.systemTraceAuditNumber}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.redemptionPin}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.redemptionAccountNumber}"></td>
+                        <td class="enterative-layout-list--divider-right" th:text="${transaction.transactionCurrencyCode}"></td>
+                        <td colspan="2" th:text="${transaction.bhnActivation.type}"></td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+        <p>
+            (1) - dd/MM/yyyy<br />
+            (2) - HH:mm:ss<br />
+            (3) - System Trace Audit Number<br />
+            (4) - Network Management Code<br />
+            (5) - dd/MM/yyyy HH:mm:ss<br />
+            (6) - Product Category Code<br />
+            (7) - Redemption Account Number<br />
+            (8) - Activation Account Number<br />
+            (9) - Transaction Unique ID<br />
+            (10) - Correlated Transaction Unique ID
+        </p>
+    </body>
+</html>

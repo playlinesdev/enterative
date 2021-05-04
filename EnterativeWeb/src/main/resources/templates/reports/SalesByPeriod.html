@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>
+        <th:block th:text="#{base.salesbyperiod}"/>
+    </title>
+    <style>
+            @page { size: A4 portrait; }
+
+            p, td {
+                font-size: 13px;
+            }
+
+            .enterative-layout__block--align-center {
+                text-align: center;
+                display: table;
+                margin: 0 auto;
+            }
+
+            .enterative-layout-list--divider-top {
+                border-top: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-top-white {
+                border-top: none !important;
+            }
+
+            .enterative-layout-list--divider-right {
+                border-right: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-bottom-white {
+                border-bottom: none !important;
+            }
+
+            .enterative-layout-list--divider-bottom {
+                border-bottom: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-left {
+                border-left:  1px solid gray;
+            }
+
+            .enterative-layout-table--center-content * {
+                text-align: center;
+            }
+
+            .mdl-data-table {                
+                border: 1px solid gray;
+                white-space:nowrap;                
+                background-color: #fff;
+                border-spacing: 0px;
+                width: 98%;
+                -fs-table-paginate: paginate;
+            }
+
+            .mdl-data-table tr {                
+                height: 30px;                
+            }
+
+            .mdl-data-table td {
+                height:30px;                
+                padding: 2px 8px;                
+                vertical-align: middle;
+            }
+
+            .mdl-data-table th {                
+                vertical-align:middle;                
+                font-weight:700;
+                line-height:24px;
+                letter-spacing:0;
+                height:30px;
+                font-size:12px;
+                color:rgba(0,0,0,.54);                             
+                padding: 0 8px 2px 8px;
+            }
+
+            .odd {
+                /*background-color: #f9f9f9;*/
+                background-color: white;
+            }
+
+            .odd > td {
+                border-bottom: 1px solid gray;
+                border-top: 1px solid gray;
+            }
+
+            .even {
+                background-color: white !important;
+            }
+
+            .enterative-layout__text--align-center {
+                text-align: center !important;
+            }
+
+            .enterative-layout-left--text {
+                text-align: left !important;
+            }
+
+
+    </style>
+</head>
+<body>
+<table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content">
+    <thead>
+    <tr>
+        <th colspan="4">
+            <h2>
+                <th:block th:text="#{base.salesbyperiod}"/>
+            </h2>
+        </th>
+    </tr>
+    <tr>
+        <th th:text="#{base.name}"></th>
+        <th th:text="#{base.city}"></th>
+        <th th:text="#{base.district}"></th>
+        <th th:text="#{base.amount}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="line : ${objectList}">
+        <tr>
+            <td th:text="${line.name}"></td>
+            <td><th:block th:text="${line.city}" />&nbsp;-&nbsp;<th:block th:text="${line.state}" /></td>
+            <td th:text="${line.district}"></td>
+            <td th:text="${#numbers.formatDecimal(line.amount, 0, 'POINT', 2, 'COMMA')}"></td>
+        </tr>
+    </th:block>
+    <tr>
+        <td class="enterative-layout-list--divider-top enterative-layout__text--align-right" colspan="3" th:text="#{base.total}"></td>
+        <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![amount]), 0, 'POINT', 2, 'COMMA')}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

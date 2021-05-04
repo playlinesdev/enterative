@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="fe7f161c-5a3d-4ca8-96b5-a7323c1fe755" activeEnvironment="Default" name="BlackHawk" resourceRoot="" soapui-version="5.3.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="e416c88c-5057-45eb-ae6a-437c4004ec6a" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://blast.preprod.blackhawk-net.com:8443" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>https://blast.preprod.blackhawk-net.com:8443</con:endpoint></con:endpoints><con:resource name="Transaction" path="/transactionManagement/v2/transaction/network" id="4277a330-7fc1-41fe-911a-1fa3990050b1"><con:settings/><con:parameters/><con:method name="Transaction" id="6c99c4a8-7762-466b-a386-e22ba2e66278" method="POST"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/html; charset=iso-8859-1</con:mediaType><con:status>405 400 500</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/x-www-form-urlencoded</con:mediaType><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>text/xml</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/xml</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" id="0fd6ee31-1aa3-4181-a4e6-27692f2ae3e8" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://blast.preprod.blackhawk-net.com:8443</con:endpoint><con:request>{  
+   "header":{  
+      "details":{  
+         "productCategoryCode":"01",
+         "specVersion":"04"
+      },
+      "signature":"BHNUMS"
+   },
+   "transaction":{  
+      "acquiringInstitutionIdentifier":"99999999998",
+      "additionalTxnFields":{  
+         "productId":"505164401916"
+      },
+      "localTransactionDate":"150615",
+      "localTransactionTime":"091343",
+      "merchantCategoryCode":"5399",
+      "merchantIdentifier":"99999999998    ",
+      "merchantLocation":"                      Campo Grande MS BR",
+      "merchantTerminalId":"79006     564   ",
+      "pointOfServiceEntryMode":"041",
+      "primaryAccountNumber":"6039534201000000024",
+      "processingCode":"745400",
+      "retrievalReferenceNumber":"000595811876",
+      "systemTraceAuditNumber":"001018",
+      "transactionAmount":"000000001990",
+      "transactionCurrencyCode":"986",
+      "transmissionDateTime":"150615131358"
+   }
+}</con:request><con:originalUri>https://blast.preprod.blackhawk-net.com/transactionManagement/v2/transaction</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request><con:request name="ECHO" id="0fd6ee31-1aa3-4181-a4e6-27692f2ae3e8" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://blast.preprod.blackhawk-net.com:8443</con:endpoint><con:request>{
+		"header": {
+			"signature": "BHNUMS",
+			"details": {
+				"productCategoryCode": "01",
+				"specVersion": "04"
+			}
+		},
+		"transaction": {
+			"transmissionDateTime": "151222160322",
+			"systemTraceAuditNumber": "010560",
+			"networkManagementCode": "301"
+		}
+	}</con:request><con:originalUri>https://blast.preprod.blackhawk-net.com/transactionManagement/v2/transaction</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

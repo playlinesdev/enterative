@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="conteudo">
+            <form th:action="@{/admin/shopcommissionreport}" id="domFormSearch" th:object="${searchForm}" method="post">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.product}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="product"><th:block th:text="#{base.product}" /></label>
+                            <select class="mdl-textfield__input" id="product" th:field="*{product}">
+                                <option value=""></option>
+                                <option th:each="product : ${product_list}" th:value="${product.id}" th:text="${product.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.shop}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="shop"><th:block th:text="#{base.shop}" /></label>
+                            <select class="mdl-textfield__input" id="shop" th:field="*{shop}">
+                                <option value=""></option>
+                                <option th:each="shop : ${shop_list}" th:value="${shop.id}" th:text="${shop.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing">
+                <th:block th:each="obj,iterStat : ${report}">
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__subtitle">
+                        <th:block th:text="${obj.productName}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--2-col-desktop enterative-form__subtitle">
+                        <th:block th:text="${'R$ ' + #numbers.formatDecimal(obj.faceValue,0,'POINT',2,'COMMA')}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--2-col-desktop enterative-form__subtitle">
+                        <th:block th:if="${obj.chartValue ne null}" th:text="${'R$ ' + #numbers.formatDecimal(obj.chartValue,0,'POINT',2,'COMMA')}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--2-col-desktop enterative-form__subtitle">
+                        <th:block th:text="${#numbers.formatDecimal(obj.chartPercentage,0,'POINT',2,'COMMA') + ' %'}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">    
+                        <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing">
+                            <th:block th:each="line,lineStat : ${obj.lines}">
+                                <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--2-col-desktop">
+                                    <th:block th:text="${line.shopName}" />
+                                </div>
+                                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--1-col-desktop">
+                                    <th:block th:if="${line.shopValue ne null}" th:text="${'R$ ' + #numbers.formatDecimal(line.shopValue,0,'POINT',2,'COMMA')}" />
+                                </div>
+                                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--1-col-desktop">
+                                    <th:block th:text="${#numbers.formatDecimal(line.shopPercentage,0,'POINT',2,'COMMA') + ' %'}" />
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </th:block>
+    </body>
+</html>

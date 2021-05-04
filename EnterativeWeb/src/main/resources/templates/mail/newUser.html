@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title><th:block th:text="#{__${subject}__}" /></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p th:text="${name}"></p>
+        <p th:text="#{user.confirmationemail.1}"></p>
+        <p>
+            <a th:href="${link}">
+                <span th:text="${link}" />
+            </a>
+        </p>
+        <p>
+            <th:block th:text="#{mail.sincerely}" />,<br />
+            <img src="https://enterativeapk.tk/enterative/layout/images/Logo.png" style="max-height: 100px;" />
+        </p>        
+    </body>
+</html>

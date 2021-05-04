@@ -1,0 +1,1 @@
+ALTER TABLE itempedido MODIFY gc_cod_barra VARCHAR(32);

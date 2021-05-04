@@ -1,0 +1,1 @@
+ALTER TABLE bhn_voucher CHANGE COLUMN pin pin VARCHAR(255);

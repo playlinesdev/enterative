@@ -1,0 +1,1 @@
+ALTER TABLE sale_order_line ADD COLUMN product_type VARCHAR(255);

@@ -1,0 +1,1 @@
+ALTER TABLE web_user ADD COLUMN last_search_json TEXT;

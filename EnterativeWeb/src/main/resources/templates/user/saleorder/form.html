@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt_br" 
+      xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/form}">
+    <body>
+        <th:block layout:fragment="hiddenFields">
+            <input type="hidden" id="id" th:field="*{id}"/>
+        </th:block>
+
+        <th:block layout:fragment="form_title">
+            <th:block th:text="#{sale.order}" sec:authorize="not hasRole('ROLE_CUSTOMER')" /><th:block th:text="#{menu.orders}" sec:authorize="hasRole('ROLE_CUSTOMER')" /><th:block th:if="*{id}">&nbsp;<th:block th:text="#{sale.order.number}" />&nbsp;<th:block th:text="*{id}" /></th:block>
+        </th:block>
+
+        <th:block layout:fragment="form_actions" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/admin/saleorder/activate/{id}(id=${activeObject.id})}">
+                <span class="mdl-button">
+                    <i class="material-icons mdl-color-text--green">check</i><th:block th:text="#{base.activate}" />
+                </span>
+            </a>
+            <a th:href="@{/admin/saleorder/cancel/{id}(id=${activeObject.id})}">
+                <span class="mdl-button">
+                    <i class="material-icons mdl-color-text--red">not_interested</i><th:block th:text="#{base.cancel}" />
+                </span>
+            </a>
+        </th:block>
+
+        <th:block layout:fragment="form_body">
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.creationdate}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <th:block th:text="${#dates.format(activeObject.createdAt, 'dd/MM/yyyy HH:mm')}" th:if="${activeObject.createdAt}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{sale.order.totalamount}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <th:block th:if="${activeObject.amount}" th:text="${'R$ ' + #numbers.formatDecimal(activeObject.amount,0,'POINT',2,'COMMA')}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{sale.order.status}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input type="hidden" th:field="${activeObject.status}" />
+                            <i id="iPending_" th:attrappend="id=${activeObject.id}" class="material-icons enterative-material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${activeObject.status == T(br.com.chart.enterative.enums.SALE_ORDER_STATUS).PENDING}">alarm</i>
+                            <i id="iDenied_" th:attrappend="id=${activeObject.id}" class="material-icons enterative-material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${activeObject.status == T(br.com.chart.enterative.enums.SALE_ORDER_STATUS).DENIED}">error</i>
+                            <i id="iActivated_" th:attrappend="id=${activeObject.id}" class="material-icons enterative-material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${activeObject.status == T(br.com.chart.enterative.enums.SALE_ORDER_STATUS).ACTIVATED}">done</i>
+                            <th:block th:text="#{__*{status.description}__}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop" th:if="*{emailStatus ne null}">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{sale.order.emailstatus}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input type="hidden" th:field="${activeObject.emailStatus}" />
+                            <i class="material-icons enterative-material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${activeObject.emailStatus == T(br.com.chart.enterative.enums.EMAIL_STATUS).IDLE}">alarm</i>
+                            <i class="material-icons enterative-material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${activeObject.emailStatus == T(br.com.chart.enterative.enums.EMAIL_STATUS).SENT}">done</i>
+                            <th:block th:text="#{__*{emailStatus.description}__}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{sale.order.type}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <th:block th:text="#{__*{type.description}__}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.customermobile}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <th:block th:text="*{customerMobile}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.shop}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <th:block th:text="${activeObject.shop.name}" th:if="${activeObject.shop}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.account}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <th:block th:text="${activeObject.account.name}" th:if="${activeObject.account}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                <th:block th:text="#{sale.order.cards}" />
+            </div>
+            <th:block th:each="item : ${activeObject.lines}">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__divider-bottom">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-layout-crudform__label enterative-layout__divider-right">
+                            <img class="enterative-layout-crudform__giftcard-image" th:src="${item.product.imagem}" th:alt="${item.product.name}" />
+                        </div>                            
+                        <div class="mdl-cell mdl-cell--3-col-phone mdl-cell--4-col-tablet mdl-cell--9-col-desktop">
+                            <div class="mdl-grid mdl-grid--no-spacing">
+                                <div class="mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label enterative-text__ellipsis">
+                                    <th:block th:text="${'[' + item.id + ']'}" sec:authorize="hasRole('ROLE_ADMIN')" />
+                                    <th:block th:text="${item.product.name}" />
+                                </div>
+                                <div class="mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label enterative-text__ellipsis">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{sale.order.useremail}" />
+                                        </div>                    
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:text="${item.userEmail}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{sale.order.amount}" />
+                                        </div>                    
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:if="${item.amount ne null}" th:text="${'R$ ' + #numbers.formatDecimal(item.amount,0,'POINT',2,'COMMA')}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{sale.order.status}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <i class="material-icons enterative-material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${item.userEmailStatus == T(br.com.chart.enterative.enums.EMAIL_STATUS).IDLE}">mail_outline</i>
+                                            <i class="material-icons enterative-material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${item.userEmailStatus == T(br.com.chart.enterative.enums.EMAIL_STATUS).SENT}">mail_outline</i>
+                                            
+                                            <i class="material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${item.status == T(br.com.chart.enterative.enums.SALE_ORDER_LINE_STATUS).PENDING}">alarm</i>
+                                            <i class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${item.status == T(br.com.chart.enterative.enums.SALE_ORDER_LINE_STATUS).DENIED}">error</i>
+                                            <i class="material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${item.status == T(br.com.chart.enterative.enums.SALE_ORDER_LINE_STATUS).ACTIVATED}">done</i>
+                                            <th:block th:text="#{__${item.status.description}__}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <a th:href="@{/admin/saleorder/line/activate/{id}/{saleorder}(id=${item.id}, saleorder=${activeObject.id})}">
+                                                <span class="mdl-button">
+                                                    <i class="material-icons mdl-color-text--green">check</i><th:block th:text="#{base.activate}" />
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--3-col-desktop">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{sale.order.activationdate}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:if="${item.returnDate ne null}" th:text="${#dates.format(item.returnDate, 'dd/MM/yyyy HH:mm')}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--3-col-desktop">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{base.externalcode}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:text="${item.externalCode}" sec:authorize="not hasRole('ROLE_ADMIN')" />
+                                            <a th:href="@{/admin/bhn/activation/code/{code}(code=${item.externalCode})}" target="_blank" sec:authorize="hasRole('ROLE_ADMIN')">
+                                                <th:block th:text="${item.externalCode}" />
+                                            </a>
+                                            <a th:href="@{/admin/user/saleorder/removeexternalcode/{id}(id=${item.id})}" sec:authorize="hasRole('ROLE_ADMIN')">
+                                                <i class="material-icons mdl-color-text--red">delete</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--3-col-desktop enterative-layout__divider-top" th:if="${item.operator}">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{base.operator}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:text="${item.operator}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--3-col-desktop enterative-layout__divider-top" th:if="${item.areaCode}">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{base.areacode}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:text="${item.areaCode}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--3-col-desktop enterative-layout__divider-top" th:if="${item.catalogId}">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{base.catalogid}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:text="${item.catalogId}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--3-col-desktop enterative-layout__divider-top" th:if="${item.phone}">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                            <th:block th:text="#{base.phone}" />
+                                        </div>
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:text="${item.phone}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop enterative-layout__divider-top" th:if="${item.product.termsAndConditions}">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-left enterative-layout-crudform__label">
+                                            <a class="mdl-navigation__link" href="#" id="terms_" th:attrappend="id=${item.id}" onclick="toggleSubMenu(this.id, false, false);">
+                                                <i class="material-icons" id="terms_" th:attrappend="id=${item.id}+'_icon'">keyboard_arrow_right</i>
+                                            </a>
+                                            <th:block th:text="#{base.termsandconditions}" />
+                                        </div>
+                                        <div id="terms_" th:attrappend="id=${item.id}+'_submenu'" style="display: none" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:utext="${item.product.termsAndConditions.description}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop enterative-layout__divider-top" th:if="${item.product.termsAndConditions}">
+                                    <div class="mdl-grid mdl-grid--no-spacing">
+                                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-left enterative-layout-crudform__label">
+                                            <a class="mdl-navigation__link" href="#" id="activation_" th:attrappend="id=${item.id}" onclick="toggleSubMenu(this.id, false, false);">
+                                                <i class="material-icons" id="activation_" th:attrappend="id=${item.id}+'_icon'">keyboard_arrow_right</i>
+                                            </a>
+                                            <th:block th:text="#{base.activationinstructions}" />
+                                        </div>
+                                        <div id="activation_" th:attrappend="id=${item.id}+'_submenu'" style="display: none" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                            <th:block th:utext="${item.product.activationInstructions.description}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </th:block>
+    </body>
+</html>

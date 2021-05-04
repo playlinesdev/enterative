@@ -1,0 +1,38 @@
+name: enterativeflutter
+description: Enterative Flutter Project
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.3.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  permission_handler: ^4.2.0+hotfix.3
+  provider: ^4.0.4
+  flutter_datetime_picker: ^1.3.4
+  intl: ^0.16.1
+  flushbar: ^1.9.1
+  shared_preferences: ^0.5.6+3
+  http: ^0.12.0+4
+  barcode_scan: ^2.0.1
+  flutter_launcher_icons: ^0.7.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo.png
+    - assets/cartao_fisico.png

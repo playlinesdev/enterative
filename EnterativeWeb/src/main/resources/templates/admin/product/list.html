@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{base.products}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{product.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="listHeader">
+            <form th:action="@{/admin/product}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.search}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-form__field-label enterative-layout__text--align-center">
+                        <th:block th:text="#{base.name}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="name" th:field="*{name}" />
+                            <label class="mdl-textfield__label" for="name"><th:block th:text="#{base.name}" /></label>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-form__field-label enterative-layout__text--align-center">
+                        <th:block th:text="#{base.ean}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="ean" th:field="*{ean}" />
+                            <label class="mdl-textfield__label" for="ean"><th:block th:text="#{base.ean}" /></label>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-form__field-label enterative-layout__text--align-center">
+                        <th:block th:text="#{base.category}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="category" th:field="*{category}">
+                                <option value=""></option>
+                                <option th:each="category : ${category_list}" th:value="${category.id}" th:text="${category.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-form__field-label enterative-layout__text--align-center">
+                        <th:block th:text="#{base.status}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="status" th:field="*{status}">
+                                <option value=""></option>
+                                <option th:each="status : ${status_list}" th:value="${status}" th:text="#{__${status.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-form__field-label enterative-layout__text--align-center">
+                        <th:block th:text="#{base.type}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="type" th:field="*{type}">
+                                <option value=""></option>
+                                <option th:each="type : ${type_list}" th:value="${type}" th:text="#{__${type.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-form__field-label enterative-layout__text--align-center">
+                        <th:block th:text="#{base.activationprocess}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="status" th:field="*{activationProcess}">
+                                <option value=""></option>
+                                <option th:each="process : ${process_list}" th:value="${process}" th:text="#{__${process.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i>&nbsp;<th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_primary">
+            <span>
+                <th:block th:text="${obj.name}" />&nbsp;[<th:block th:text="${obj.displayName}" />]
+            </span>
+            <span class="mdl-list__item-text-body">
+                <th:block th:text="${obj.ean}" />&nbsp;[<th:block th:text="${obj.primaryAccountNumber}" />]&nbsp;-&nbsp;<th:block th:text="#{__${obj.type.description}__}" />
+                <br />
+                <th:block th:text="${'R$ ' + #numbers.formatDecimal(obj.amount,0,'POINT',2,'COMMA')}" />
+            </span>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_secondary">
+            <span class="mdl-list__item-secondary-content enterative-layout__block--align-center">
+                <img class="enterative-layout-list__item-image" th:if="${obj.imagem}" th:src="${obj.imagem}" th:alt="${obj.name}" />
+            </span>
+            <span class="mdl-list__item-secondary-content">
+                <i id="iInactive_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.STATUS).INACTIVE}">error</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iInactive_" th:attrappend="for=${obj.id}" th:text="#{base.inactive}" />
+
+                <i id="iCanceled_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.STATUS).CANCELED}">block</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iCanceled_" th:attrappend="for=${obj.id}" th:text="#{base.canceled}" />
+
+                <i id="iActivated_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.STATUS).ACTIVE}">done</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iActivated_" th:attrappend="for=${obj.id}" th:text="#{base.active}" />
+            </span>
+        </th:block>
+    </body>
+</html>

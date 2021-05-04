@@ -1,0 +1,1 @@
+ALTER TABLE web_user ADD COLUMN forgot_password_token VARCHAR(255);

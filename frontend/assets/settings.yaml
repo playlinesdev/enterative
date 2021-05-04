@@ -1,0 +1,7 @@
+api:
+  url: http://localhost:3000
+  host: 192.168.0.204
+  port: 3000
+affiliates:
+  zix_informatica:
+    img: 'assets/img/zix_informatica.jpeg'

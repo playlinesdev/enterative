@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/form}">
+    <body>
+        <th:block layout:fragment="hiddenFields">
+            <input class="mdl-textfield__input" type="hidden" id="id" th:field="*{id}"/>
+        </th:block>
+
+        <th:block layout:fragment="form_title">
+            <th:block th:text="#{base.activation}" />&nbsp;-&nbsp;<th:block th:text="*{id}" />
+        </th:block>
+
+        <th:block layout:fragment="form_body">
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.createdby}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="${activeObject.createdBy.name}" th:if="${activeObject.createdBy}" />
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.createdat}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="${#dates.format(activeObject.createdAt, 'dd/MM/yyyy HH:mm')}" th:if="${activeObject.createdAt}" />                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.alteredby}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">                        
+                        <th:block th:text="${activeObject.alteredBy.name}" th:if="${activeObject.alteredBy}" />                        
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.alteredat}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="${#dates.format(activeObject.alteredAt, 'dd/MM/yyyy HH:mm')}" th:if="${activeObject.alteredAt}" />                        
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.externalcode}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="${activeObject.externalCode}" />
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.saleorder}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <a th:href="@{/user/saleorder/edit/{id}(id=${activeObject.saleOrder.id})}" th:if="${activeObject.saleOrder}" target="_blank">
+                            <th:block th:text="${activeObject.saleOrder.id}" />
+                        </a>
+                        <span th:unless="${activeObject.saleOrder}">
+                            <i class="material-icons mdl-color-text--red">not_interested</i>&nbsp;Pedido não encontrado!
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.shop}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="${activeObject.shopCode}" />
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.terminal}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="${activeObject.terminal}" />
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.status}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="#{__${activeObject.status.description}__}" th:if="${activeObject.status}" />
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.type}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="#{__${activeObject.type.description}__}" th:if="${activeObject.type}" />
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.queuestatus}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="#{__${activeObject.queueStatus.description}__}" th:if="${activeObject.queueStatus}" />
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.callbackstatus}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <th:block th:text="#{__${activeObject.callbackStatus.description}__}" th:if="${activeObject.callbackStatus}" />
+                    </div>
+                </div>
+            </div>
+            <!-- BHN Transactions -->
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop" th:if="${activeObject.transactions}">
+                <ul class="mdl-list enterative-list--striped">
+                    <li class="mdl-list__item">
+                        <span class="enterative-layout__block--align-center">
+                            <th:block th:text="#{bhn.transactions}" />
+                        </span>
+                    </li>
+                    <th:block th:if="${activeObject.transactions.empty}">
+                        <li class="mdl-list__item">
+                            <span class="enterative-layout__block--align-center">
+                                <b><th:block th:text="#{bhn.transactions.empty_}" /></b>
+                            </span>
+                        </li>
+                    </th:block>
+                    <th:block th:each="item,itemIterStat : ${activeObject.transactions}">
+                        <li class="mdl-list__item mdl-list__item--three-line">
+                            <span class="mdl-list__item-primary-content">
+                                <a th:href="@{/admin/bhn/transaction/{id}(id=${item.id})}" target="_blank">
+                                    <i class="material-icons mdl-list__item-avatar enterative-layout-crudform__avatar">create</i>
+                                </a>
+                                <span class="mdl-list__item-text-body">
+                                    <th:block th:text="${item.id}" />
+                                    <br/>
+                                    <th:block th:text="${item.productId}" />
+                                    <br/>
+                                    <th:block th:text="#{__${item.direction.description}__}" />                
+                                </span>                                    
+                            </span>
+                            <span class="mdl-list__item-secondary-content">
+                                <th:block th:text="${item.responseCode}" />
+                            </span>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+            <!-- Account Transactions -->
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop" th:if="${activeObject.accountTransactions}">
+                <ul class="mdl-list enterative-list--striped">
+                    <li class="mdl-list__item">
+                        <span class="enterative-layout__block--align-center">
+                            <th:block th:text="#{base.accounttransactions}" />
+                        </span>
+                    </li>
+                    <th:block th:if="${activeObject.accountTransactions.empty}">
+                        <li class="mdl-list__item">
+                            <span class="enterative-layout__block--align-center">
+                                <b><th:block th:text="#{base.accounttransactions.empty_}" /></b>
+                            </span>
+                        </li>
+                    </th:block>
+                    <th:block th:each="item,itemIterStat : ${activeObject.accountTransactions}">
+                        <li class="mdl-list__item mdl-list__item--three-line">
+                            <span class="mdl-list__item-primary-content">
+                                <a th:href="@{/account/transaction/{id}(id=${item.id})}" target="_blank">
+                                    <i class="material-icons mdl-list__item-avatar enterative-layout-crudform__avatar">create</i>
+                                </a>
+                                <span>
+                                    <th:block th:if="${item.transactionDate ne null}" th:text="${#dates.format(item.transactionDate, 'dd/MM/yyyy HH:mm')}" />
+                                </span>
+                                <span class="mdl-list__item-text-body">
+                                    <th:block th:text="#{base.user}" />:&nbsp;<th:block th:text="${item.createdBy.name}" />
+                                    &nbsp;-&nbsp;
+                                    <th:block th:text="#{base.account}" />:&nbsp;<th:block th:text="${item.account.name}" />
+                                    <br />
+                                    <span th:if="${item.saleOrderNumber ne null or item.purchaseOrderNumber ne null}">
+                                        <th:block th:text="#{base.order}" />&nbsp;
+                                        <th:block th:text="${item.saleOrderNumber}" th:if="${item.saleOrderNumber ne null}" />
+                                        <th:block th:text="${item.purchaseOrderNumber}" th:if="${item.purchaseOrderNumber ne null}" />
+                                    </span>
+                                </span>
+                            </span>
+                            <span class="mdl-list__item-secondary-content" th:classappend="${item.type == T(br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_TYPE).DEBIT} ? mdl-color-text--red : mdl-color-text--green">
+                                <th:block th:text="${'R$ ' + #numbers.formatDecimal(item.amount,0,'POINT',2,'COMMA')}" />
+                            </span>
+                            <span class="mdl-list__item-secondary-content">
+                                <i id="iCanceled_" th:attrappend="id=${item.id}" class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${item.status == T(br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_STATUS).CANCELED}">error</i>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="iCanceled_" th:attrappend="for=${item.id}" th:text="#{base.canceled}" />
+
+                                <i id="iActive_" th:attrappend="id=${item.id}" class="material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${item.status == T(br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_STATUS).ACTIVE}">done</i>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="iActive_" th:attrappend="for=${item.id}" th:text="#{base.active}" />
+
+                                <i id="iPending_" th:attrappend="id=${item.id}" class="material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${item.status == T(br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_STATUS).PENDING}">alarm</i>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="iPending_" th:attrappend="for=${item.id}" th:text="#{base.pending}" />
+                            </span>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+        </th:block>
+
+        <th:block layout:fragment="form_actions">
+            <a th:href="@{/admin/bhn/activation/cancel/{id}(id=${activeObject.id})}"><span class="mdl-button"><i class="material-icons mdl-color-text--red">not_interested</i><th:block th:text="#{base.cancel}" /></span></a>
+        </th:block>
+    </body>
+</html>

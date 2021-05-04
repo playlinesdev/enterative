@@ -1,0 +1,1 @@
+INSERT INTO account_transaction_category (created_at, altered_at, created_by, altered_by, name) VALUES (CURDATE(), CURDATE(), 0, 0, 'base.refund');

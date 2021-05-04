@@ -1,0 +1,22 @@
+DELETE FROM sdf_detail;
+DELETE FROM transacao;
+DELETE FROM ativacao;
+DELETE FROM shop_transaction;
+DELETE FROM shop_transaction_dead_file;
+DELETE FROM sale_order_line;
+DELETE FROM sale_order;
+DELETE FROM purchase_order_line;
+DELETE FROM purchase_order;
+DELETE FROM callback_queue;
+DELETE FROM sdf_trailer;
+DELETE FROM sdf_header;
+DELETE FROM sdf_file;
+DELETE FROM voucher;
+
+DELETE FROM shop_product_commission;
+DELETE FROM web_user_web_user_role WHERE web_user_id > 1;
+DELETE FROM web_user WHERE id > 1;
+DELETE FROM shop_phone;
+DELETE FROM shop;
+INSERT INTO shop (name, code, merchant_id, status) VALUES ('Loja Chart - Teste', '00001', 1, 0);
+INSERT INTO shop_product_commission (shop_id, product_id, percentage) (SELECT 12, id, 0.1 FROM product);

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">            
+            <form th:action="@{/store/search}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block th:text="#{base.storesearch}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-form__field-label enterative-layout__text--align-center">
+                        <th:block th:text="#{base.name}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="name" th:field="*{name}" />
+                            <label class="mdl-textfield__label" for="name"><th:block th:text="#{base.name}" /></label>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.category}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="category"><th:block th:text="#{base.category}" /></label>
+                            <select class="mdl-textfield__input" id="category" th:field="*{productCategory}">
+                                <option value=""></option>
+                                <option th:each="category : ${category_list}" th:value="${category.id}" th:text="${category.displayName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.sort}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="sortColumn"><th:block th:text="#{base.sort}" /></label>
+                            <select class="mdl-textfield__input" id="sortColumn" th:field="*{sortColumn}">
+                                <option value=""></option>
+                                <option th:each="s : ${sort_list}" th:value="${s.id}" th:text="#{__${s.name}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i>&nbsp;<th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="mdl-grid mdl-grid--no-spacing enterative-layout__divider-top enterative-layout__divider-bottom" th:if="${page}">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <ul class="pagination pagination-centered enterative-pagination">
+                        <li th:class="${page.firstPage} ? 'disabled' : ''">                                
+                            <a th:onclick="'gotoPage(0, ' + ${page.size} + ')'" title="Primeira página" class="material-icons">
+                                skip_previous
+                            </a>
+                        </li>
+                        <li th:class="${page.hasPreviousPage} ? '' : 'disabled'">                                
+                            <a th:onclick="'gotoPage(' + ${page.number - 2} + ', ' + ${page.size} + ')'" title='Página anterior' class="material-icons">
+                                navigate_before
+                            </a>
+                        </li>
+                        <li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''">
+                            <a th:onclick="'gotoPage(' + ${item.number - 1} + ', ' + ${page.size} + ')'">
+                                <th:block th:text='${item.number}' />
+                            </a>
+                        </li>
+                        <li th:class="${page.hasNextPage}? '' : 'disabled'">
+                            <a th:onclick="'gotoPage(' + ${page.number} + ', ' + ${page.size} + ')'" title='Próxima página' class="material-icons">
+                                navigate_next
+                            </a>
+                        </li>
+                        <li th:class="${page.lastPage}? 'disabled' : ''">
+                            <a th:onclick="'gotoPage(' + ${page.totalPages - 1} + ', ' + ${page.size} + ')'" title="Última página" class="material-icons">
+                                skip_next
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <ul class="mdl-list enterative-list--striped" th:if="${page}">
+                <li class="mdl-list__item mdl-color--white">
+                    <span class="enterative-layout__block--align-center">
+                        <b th:text="#{base.product}" />
+                    </span>
+                </li>
+                <th:block th:if="${objectList.empty}">
+                    <li class="mdl-list__item">
+                        <span class="enterative-layout__block--align-center">
+                            <th:block th:text="#{product.empty_}" />
+                        </span>
+                    </li>
+                </th:block>
+                <th:block th:each="obj,iterStat : ${objectList}">
+                    <li class="mdl-list__item mdl-list__item--two-line enterative-store-list__image" th:if="${obj ne null}">
+                        <img class="enterative-store-list__item-image" th:if="${obj.imagem}" th:src="${obj.imagem}" th:alt="${obj.displayName}" />
+                        <i class="material-icons enterative-store-list__item-no-image" role="presentation" th:if="${obj.imagem eq null}">photo_camera</i>
+                        <span class="mdl-list__item-primary-content enterative-store-list__primary-content enterative-layout__text--align-center">
+                            <th:block th:text="${obj.displayName}" />
+                            <span class="mdl-list__item-sub-title"><th:block th:text="${'R$ ' + #numbers.formatDecimal(obj.amount,0,'POINT',2,'COMMA')}" th:if="${obj.amount}" /></span>
+                            <br />
+                            <a th:href="@{/store/product/{id}(id=${obj.id})}" class="mdl-button mdl-js-button enterative-store-grid__details-button">
+                                <i class="material-icons" role="presentation">pageview</i>
+                                <span th:text="#{base.details}" />
+                            </a>
+                        </span>
+                    </li>
+                </th:block>
+            </ul>
+            <div class="mdl-grid mdl-grid--no-spacing enterative-layout__divider-top" th:if="${page}">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <ul class="pagination pagination-centered enterative-pagination">
+                        <li th:class="${page.firstPage} ? 'disabled' : ''">                                
+                            <a th:onclick="'gotoPage(0, ' + ${page.size} + ')'" title="Primeira página" class="material-icons">
+                                skip_previous
+                            </a>
+                        </li>
+                        <li th:class="${page.hasPreviousPage} ? '' : 'disabled'">                                
+                            <a th:onclick="'gotoPage(' + ${page.number - 2} + ', ' + ${page.size} + ')'" title='Página anterior' class="material-icons">
+                                navigate_before
+                            </a>
+                        </li>
+                        <li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''">
+                            <a th:onclick="'gotoPage(' + ${item.number - 1} + ', ' + ${page.size} + ')'">
+                                <th:block th:text='${item.number}' />
+                            </a>
+                        </li>
+                        <li th:class="${page.hasNextPage}? '' : 'disabled'">
+                            <a th:onclick="'gotoPage(' + ${page.number} + ', ' + ${page.size} + ')'" title='Próxima página' class="material-icons">
+                                navigate_next
+                            </a>
+                        </li>
+                        <li th:class="${page.lastPage}? 'disabled' : ''">
+                            <a th:onclick="'gotoPage(' + ${page.totalPages - 1} + ', ' + ${page.size} + ')'" title="Última página" class="material-icons">
+                                skip_next
+                            </a>
+                        </li>
+                    </ul>
+                </div>                            
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <th:block layout:fragment="listAddButton">
+                <a th:if="${addPath != null}" th:href="@{/{path}(path=${addPath})}" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent enterative-form__add-button">
+                        <i class="material-icons" role="presentation">add</i><span class="visuallyhidden" th:text="#{base.add}"></span>
+                    </button>
+                </a>
+            </th:block>
+
+            <th:block layout:fragment="listHeader" />
+
+            <th:block layout:fragment="tableLayout">
+                <div class="mdl-grid mdl-grid--no-spacing" th:if="${page}">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <ul class="pagination pagination-centered enterative-pagination">
+                            <li th:class="${page.firstPage} ? 'disabled' : ''">                                
+                                <a th:onclick="'gotoPage(0, ' + ${page.size} + ')'" title="Primeira página" class="material-icons">
+                                    skip_previous
+                                </a>
+                            </li>
+                            <li th:class="${page.hasPreviousPage} ? '' : 'disabled'">                                
+                                <a th:onclick="'gotoPage(' + ${page.number - 2} + ', ' + ${page.size} + ')'" title='Página anterior' class="material-icons">
+                                    navigate_before
+                                </a>
+                            </li>
+                            <li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''">
+                                <a th:onclick="'gotoPage(' + ${item.number - 1} + ', ' + ${page.size} + ')'">
+                                    <th:block th:text='${item.number}' />
+                                </a>
+                            </li>
+                            <li th:class="${page.hasNextPage}? '' : 'disabled'">
+                                <a th:onclick="'gotoPage(' + ${page.number} + ', ' + ${page.size} + ')'" title='Próxima página' class="material-icons">
+                                    navigate_next
+                                </a>
+                            </li>
+                            <li th:class="${page.lastPage}? 'disabled' : ''">
+                                <a th:onclick="'gotoPage(' + ${page.totalPages - 1} + ', ' + ${page.size} + ')'" title="Última página" class="material-icons">
+                                    skip_next
+                                </a>
+                            </li>
+                        </ul>
+                    </div>                            
+                </div>
+                <ul class="mdl-list enterative-list--striped">
+                    <li class="mdl-list__item mdl-color--white">
+                        <span class="enterative-layout__block--align-center">
+                            <b><th:block layout:fragment="tableTitle" /></b>
+                        </span>
+                    </li>
+                    <th:block th:if="${objectList.empty}">
+                        <li class="mdl-list__item">
+                            <span class="enterative-layout__block--align-center">
+                                <th:block layout:fragment="tableEmpty" />
+                            </span>
+                        </li>
+                    </th:block>
+                    <th:block th:each="obj,iterStat : ${objectList}">
+                        <th:block layout:fragment="tableBody">
+                            <li class="mdl-list__item mdl-list__item--three-line">
+                                <span class="mdl-list__item-primary-content">
+                                    <a th:if="${editPath != null}" th:href="@{/{path}/{id}(path=${editPath}, id=${obj.id})}">
+                                        <i class="material-icons mdl-list__item-avatar enterative-layout-crudform__avatar">create</i>
+                                    </a>
+                                    <th:block layout:fragment="tableBody_primary" />
+                                </span>
+                                <th:block layout:fragment="tableBody_secondary" />
+                            </li>
+                        </th:block>
+                    </th:block>
+                    <th:block layout:fragment="tableFooter" />
+                </ul>
+                <div class="mdl-grid mdl-grid--no-spacing" th:if="${page}">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <ul class="pagination pagination-centered enterative-pagination">
+                            <li th:class="${page.firstPage} ? 'disabled' : ''">                                
+                                <a th:onclick="'gotoPage(0, ' + ${page.size} + ')'" title="Primeira página" class="material-icons">
+                                    skip_previous
+                                </a>
+                            </li>
+                            <li th:class="${page.hasPreviousPage} ? '' : 'disabled'">                                
+                                <a th:onclick="'gotoPage(' + ${page.number - 2} + ', ' + ${page.size} + ')'" title='Página anterior' class="material-icons">
+                                    navigate_before
+                                </a>
+                            </li>
+                            <li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''">
+                                <a th:onclick="'gotoPage(' + ${item.number - 1} + ', ' + ${page.size} + ')'">
+                                    <th:block th:text='${item.number}' />
+                                </a>
+                            </li>
+                            <li th:class="${page.hasNextPage}? '' : 'disabled'">
+                                <a th:onclick="'gotoPage(' + ${page.number} + ', ' + ${page.size} + ')'" title='Próxima página' class="material-icons">
+                                    navigate_next
+                                </a>
+                            </li>
+                            <li th:class="${page.lastPage}? 'disabled' : ''">
+                                <a th:onclick="'gotoPage(' + ${page.totalPages - 1} + ', ' + ${page.size} + ')'" title="Última página" class="material-icons">
+                                    skip_next
+                                </a>
+                            </li>
+                        </ul>
+                    </div>                            
+                </div>
+            </th:block>
+        </div>
+    </body>
+</html>

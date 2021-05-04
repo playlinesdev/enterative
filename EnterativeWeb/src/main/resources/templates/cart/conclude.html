@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <form method="post" th:action="@{/cart/conclude}" th:object="${cart}">
+                <input type="hidden" th:field="${cart.id}" />
+
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block th:text="#{base.concludeshoppingcart}" />
+                    </div>
+                    <ul class="mdl-list enterative-list--striped">
+                        <th:block th:if="*{lines.empty}">
+                            <li class="mdl-list__item">
+                                <span class="enterative-layout__block--align-center">
+                                    <th:block th:text="#{cart.empty_}" />
+                                </span>
+                            </li>
+                        </th:block>
+                        <th:block th:each="line, iterStat : *{lines}">
+                            <li class="mdl-list__item mdl-list__item--two-line enterative-cart-list__image">
+                                <input type="hidden" th:field="${cart.lines[__${iterStat.index}__].id}" />
+
+                                <img class="enterative-cart-list__item-image" th:unless="${#strings.isEmpty(line.product.imagem)}" th:src="${line.product.imagem}" th:alt="${line.product.displayName}" />
+                                <i class="material-icons enterative-cart-list__item-no-image" role="presentation" th:if="${#strings.isEmpty(line.product.imagem)}">photo_camera</i>
+                                <span class="mdl-list__item-primary-content enterative-cart-list__primary-content">
+                                    <th:block th:text="${line.product.displayName}" />
+                                    <span class="mdl-list__item-sub-title"><th:block th:text="${'R$ ' + #numbers.formatDecimal(line.amount,0,'POINT',2,'COMMA')}" th:if="${line.amount}" /></span>
+                                    <span class="mdl-list__item-sub-title"><th:block th:text="${line.userCellphone}" /></span>
+                                </span>
+                                <span class="mdl-list__item-secondary-content">
+                                    <div class="mdl-textfield mdl-js-textfield enterative-cart-list__quantity">
+                                        <th:block th:text="${#numbers.formatDecimal(line.quantity, 0, 'POINT', 0, 'COMMA')}" />
+                                    </div>
+                                </span>
+                                <span class="mdl-list__item-secondary-content enterative-cart-list__item-amount">
+                                    <th:block th:if="${line.totalAmount}" th:text="${'R$ ' + #numbers.formatDecimal(line.totalAmount,0,'POINT',2,'COMMA')}" />
+                                </span>
+                            </li>
+                        </th:block>
+                    </ul>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__divider-top">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                <th:block th:text="#{cart.totalamount}" />
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                <th:block th:text="${'R$ ' + #numbers.formatDecimal(cart.amount,0,'POINT',2,'COMMA')}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-layout-crudform__label">
+                                <th:block th:text="#{cart.totalquantity}" />
+                            </div>                    
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-layout-crudform__value">
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(cart.lines.![quantity]), 0, 'POINT', 0, 'COMMA')}" th:if="${!cart.lines.empty}"></td>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                        <a th:href="@{/store}"><span class="mdl-button"><i class="material-icons mdl-color-text--blue">store</i><th:block th:text="#{base.returnstore}" /></span></a>
+                        <a th:href="@{/cart/pay}"><span class="mdl-button"><i class="material-icons mdl-color-text--green">monetization_on</i><th:block th:text="#{base.pay}" /></span></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,1 @@
+ALTER TABLE itempedido ADD COLUMN ean varchar(13);

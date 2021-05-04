@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <a th:if="${addPath != null}" th:href="@{ {path}(path=${addPath})}">
+                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent enterative-button__add">
+                    <i class="material-icons" role="presentation">add</i><span class="visuallyhidden">Add</span>
+                </button>
+            </a>
+            <th:block layout:fragment="listHeader" />
+            <th:block layout:fragment="tableLayout">
+                <div class="table-responsive">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp enterative-table enterative-layout-center table-striped">                
+                        <th:block layout:fragment="tableHead" />
+                        <th:block th:if="${objectList.empty}">
+                            <tr>
+                                <td layout:fragment="tableEmpty" />
+                            </tr>
+                        </th:block>
+                        <tr th:each="obj : ${objectList}">
+                            <th:block layout:fragment="tableBody" />
+                            <th:block layout:fragment="tableActions">
+                                <td>
+                                    <a th:if="${editPath != null}" th:href="@{ {path}/{id}(path=${editPath}, id=${obj.id})}" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                                        <i class="material-icons">create</i>
+                                    </a>
+                                    <a th:if="${removePath != null}" th:href="@{ {path}/{id}(path=${removePath}, id=${obj.id})}" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                </td>
+                            </th:block>
+                        </tr>
+                    </table>
+                </div>
+            </th:block>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Relatório - Saldo Contas - Verificação</title>
+        <style>
+            @page { size: A4 portrait; }
+
+            p, td {
+                font-size: 13px;
+            }
+
+            .enterative-layout__text--align-center {
+                text-align: center !important;
+            }
+
+            .enterative-layout__text--align-right {
+                text-align: right !important;
+            }
+
+            .enterative-layout-left--text {
+                text-align: left !important;
+            }
+
+            .enterative-layout__block--align-center {
+                text-align: center;
+                display: table;
+                margin: 0 auto;
+            }
+
+            .enterative-layout-list--divider-top {
+                border-top: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-right {
+                border-right: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-bottom {
+                border-bottom: 1px solid gray;
+            }
+
+            .enterative-layout-table--center-content * {
+                text-align: center !important;
+            }
+
+            table {
+                -fs-table-paginate: paginate;
+            }
+
+            .mdl-data-table {
+                border: 1px solid gray;
+                white-space:nowrap;
+                background-color: #fff;
+                border-spacing: 0px;
+                width: 98%;
+            }
+
+            .mdl-data-table tr {
+                height: 20px;
+            }
+
+            .mdl-data-table td {
+                text-align: right;
+                height:20px;
+                padding: 0px 0px;
+                vertical-align: middle;
+            }
+
+            .mdl-data-table th {
+                vertical-align:bottom;
+                font-weight:700;
+                line-height:14px;
+                letter-spacing:0;
+                height:20px;
+                font-size:12px;
+                color:rgba(0,0,0,.54);
+                padding: 0px;
+                text-align: right
+            }
+
+            .odd {
+                background-color: #f9f9f9;
+            }
+
+            .line-red {
+                background-color: tomato;
+            }
+
+            .line {
+                background-color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="enterative-layout__block--align-center">
+            <h2>Relatório - Saldo Contas</h2>
+        </div>
+        <table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content">
+            <thead>
+                <tr>
+                    <th class="enterative-layout-list--divider-bottom">Conta</th>
+                    <th class="enterative-layout-list--divider-bottom">(D)</th>
+                    <th class="enterative-layout-list--divider-bottom">(C)</th>
+                    <th class="enterative-layout-list--divider-bottom">(VA)</th>
+                    <th class="enterative-layout-list--divider-bottom">(VP)</th>
+                    <th class="enterative-layout-list--divider-bottom">((D) + (C)) -<br />((VA) + (VP))</th>
+                    <th class="enterative-layout-list--divider-bottom">(R)</th>
+                    <th class="enterative-layout-list--divider-bottom">Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="line : ${objectList}">
+                    <tr>
+                        <td th:text="${line.name}" th:classappend="${line.different} ? line-red : line"></td>
+                        <td th:text="${#numbers.formatDecimal(line.deposit, 0, 'POINT', 2, 'COMMA')}" th:classappend="${line.different} ? line-red : line"></td>
+                        <td th:text="${#numbers.formatDecimal(line.commission, 0, 'POINT', 2, 'COMMA')}" th:classappend="${line.different} ? line-red : line"></td>
+                        <td th:text="${#numbers.formatDecimal(line.approvedSale, 0, 'POINT', 2, 'COMMA')}" th:classappend="${line.different} ? line-red : line"></td>
+                        <td th:text="${#numbers.formatDecimal(line.pendingSale, 0, 'POINT', 2, 'COMMA')}" th:classappend="${line.different} ? line-red : line"></td>
+                        <td th:text="${#numbers.formatDecimal(line.calculatedBalance, 0, 'POINT', 2, 'COMMA')}" th:classappend="${line.different} ? line-red : line"></td>
+                        <td th:text="${#numbers.formatDecimal(line.refund, 0, 'POINT', 2, 'COMMA')}" th:classappend="${line.different} ? line-red : line"></td>
+                        <td th:text="${#numbers.formatDecimal(line.balance, 0, 'POINT', 2, 'COMMA')}" th:classappend="${line.different} ? line-red : line"></td>
+                    </tr>
+                </th:block>
+                <tr>
+                    <td class="enterative-layout-list--divider-top enterative-layout__text--align-right" th:text="#{base.total}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![deposit]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![commission]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![approvedSale]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![pendingSale]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![calculatedBalance]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![refund]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![balance]), 0, 'POINT', 2, 'COMMA')}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <th:block th:object="${pedido}">
+                <div class="mdl-grid">
+                    <div class="enterative-layout__block--align-center mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+                        <div class="mdl-card__title mdl-card--expand enterative-card__title">
+                            <h2 class="mdl-card__title-text enterative-layout__block--align-center"><th:block th:text="#{base.order}" /></h2>
+                        </div>
+                        <div class="mdl-card__supporting-text enterative-card__supporting-text enterative-card__order-supporting-text">
+                            <ul class="mdl-list">
+                                <li class="mdl-list__item enterative-card__list-item">
+                                    <span class="mdl-list__item-primary-content"><th:block th:text="#{activation.date}" /></span>
+                                    <span id="saleorder_date" class="mdl-list__item-secondary-content" th:text="${#dates.format(pedido.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                </li>
+                                <li class="mdl-list__item enterative-card__list-item">
+                                    <span class="mdl-list__item-primary-content"><th:block th:text="#{activation.totalamount}" /></span>
+                                    <span id="saleorder_amount" class="mdl-list__item-secondary-content" th:text="${'R$ ' + #numbers.formatDecimal(pedido.amount,0,'POINT',2,'COMMA')}"></span>
+                                </li>
+                                <li class="mdl-list__item enterative-card__list-item">
+                                    <span class="mdl-list__item-primary-content"><th:block th:text="#{activation.status}" /></span>
+                                    <span id="saleorder_status" class="mdl-list__item-secondary-content" th:text="#{__*{status.description}__}"></span>
+                                </li>
+                                <li class="mdl-list__item enterative-card__list-item">
+                                    <span class="mdl-list__item-primary-content"><th:block th:text="#{base.type}" /></span>
+                                    <span id="saleorder_type" class="mdl-list__item-secondary-content" th:text="#{__*{type.description}__}"></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mdl-card__title mdl-card--expand enterative-card__title">
+                            <h2 class="mdl-card__title-text enterative-layout__block--align-center">Cartões</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text enterative-card__order-supporting-text enterative-card__supporting-text enterative-layout__divider-bottom">
+                            <div class="mdl-grid">
+                                <th:block th:each="item : ${pedido.lines}">
+                                    <input type="hidden" th:value="${item.pin}" id="saleorder_productpin" />
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                                        <div class="mdl-grid mdl-grid--no-spacing">
+                                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                                                <img class="enterative-card__gc-image" th:src="${item.product.imagem}" th:alt="${item.product.name}" />
+                                            </div>
+                                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                                                <ul class="mdl-list">
+                                                    <li class="mdl-list__item enterative-card__list-item">
+                                                        <span id="saleorder_productname" class="mdl-list__item-primary-content enterative-layout__block--align-center" th:text="${item.product.name}"></span>
+                                                    </li>
+                                                    <li class="mdl-list__item enterative-card__list-item">
+                                                        <span class="mdl-list__item-primary-content enterative-layout__block--align-center" th:text="${'R$ ' + #numbers.formatDecimal(item.amount,0,'POINT',2,'COMMA')}"></span>
+                                                    </li>
+                                                    <li class="mdl-list__item enterative-card__list-item  enterative-layout__divider-bottom">
+                                                        <span class="mdl-list__item-primary-content enterative-layout__block--align-center" th:text="#{__${item.status.description}__}"></span>
+                                                    </li>
+                                                    <li class="mdl-list__item enterative-card__list-item" th:if="${item.activationStatus != null}">
+                                                        <span class="mdl-list__item-primary-content enterative-layout__block--align-center" th:text="#{__${item.activationStatus.description}__}"></span>
+                                                    </li>
+                                                    <li class="mdl-list__item enterative-card__list-item" th:if="${item.response != null}">
+                                                        <span class="mdl-list__item-primary-content" th:classappend="${item.response.code} == 'E00' or ${item.response.code} == '00' ? mdl-color-text--green : mdl-color-text--red">
+                                                            [<span th:text="${item.response.code}" />]&nbsp;<span th:text="${item.response.description}" />
+                                                        </span>                                
+                                                    </li>
+                                                    <li class="mdl-list__item enterative-card__list-item" th:if="${item.responseAux != null}">
+                                                        <span class="mdl-list__item-primary-content" th:classappend="${item.responseAux.code} == 'E00' or ${item.responseAux.code} == '00' ? mdl-color-text--green : mdl-color-text--red">
+                                                            [<span th:text="${item.responseAux.code}" />]&nbsp;<span th:text="${item.responseAux.description}" />
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="mdl-card__actions enterative-layout__block--align-center">
+                            <a href="/enterative">
+                                <span class="mdl-button"><i class="material-icons mdl-color-text--blue">home</i>Página Inicial</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </th:block>            
+        </div>
+    </body>
+</html>

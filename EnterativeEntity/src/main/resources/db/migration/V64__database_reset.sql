@@ -1,0 +1,1 @@
+UPDATE sale_order s SET shop_id = (SELECT u.shop_id FROM web_user u WHERE u.id = s.created_by);

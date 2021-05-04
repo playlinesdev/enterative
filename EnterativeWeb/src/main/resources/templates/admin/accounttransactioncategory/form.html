@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt_br" 
+      xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/form}">
+    <body>
+        <th:block layout:fragment="additionalHead">
+            <script th:src="@{/layout/js/mdl-date-textfield.js}"></script>
+            <script th:src="@{/layout/js/crud.js}"></script>
+            <link rel="stylesheet" th:href="@{/layout/css/mdl-date-textfield.css}" />
+        </th:block>
+
+        <th:block layout:fragment="hiddenFields">
+            <input class="mdl-textfield__input" type="hidden" id="id" th:field="*{id}"/>
+        </th:block>
+
+        <th:block layout:fragment="form_title">
+            Categoria Transações Loja<th:block th:if="*{id}">&nbsp;Nº <th:block th:text="*{id}" /></th:block>
+        </th:block>
+
+        <th:block layout:fragment="form_body">
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        Nome
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop ">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="name" th:field="${activeObject.name}" />
+                            <label class="mdl-textfield__label" for="name">Nome</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+        <th:block layout:fragment="form_actions" />
+    </body>
+</html>

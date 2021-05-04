@@ -1,0 +1,9 @@
+UPDATE product SET image_path = 'google_play_100.png' WHERE ean = '5051644022640';
+UPDATE product SET image_path = 'google_play_30.png' WHERE ean = '5051644022620';
+UPDATE product SET image_path = 'google_play_50.png' WHERE ean = '5051644022630';
+UPDATE product SET image_path = 'google_play_100.png' WHERE ean = '5051644021320';
+UPDATE product SET image_path = 'google_play_30.png' WHERE ean = '5051644017930';
+UPDATE product SET image_path = 'google_play_50.png' WHERE ean = '5051644017920';
+UPDATE product SET image_path = 'google_play_100.png' WHERE ean = '5051644033120';
+UPDATE product SET image_path = 'google_play_30.png' WHERE ean = '5051644033100';
+UPDATE product SET image_path = 'google_play_50.png' WHERE ean = '5051644033110';

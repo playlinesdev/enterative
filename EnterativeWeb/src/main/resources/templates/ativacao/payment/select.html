@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="additionalHead" />
+
+        <th:block layout:fragment="conteudo">
+            <div class="mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <th:block th:text="#{activation.payment}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-newuser__welcome">
+                    <th:block th:text="#{activation.payment.1}" /><br /><th:block th:text="#{activation.payment.2}" />
+                </div>
+                <div th:if="${errorMessage != null}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__error">
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center">
+                            <i class="material-icons mdl-color-text--red">error</i>
+                        </div>
+                        <div class="mdl-cell mdl-cell--3-col-phone mdl-cell--5-col-tablet mdl-cell--11-col-desktop enterative-layout__text--align-center">
+                            <th:block th:utext="${errorMessage}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <form th:action="@{/ativacao/fisico/customer/pay/{order}/ENTERATIVE(order=${orderId})}" method="post">
+                        <button class="enterative-payment__button" type="submit">
+                            <img th:src="@{/layout/images/payment/ENTERATIVE.png}" />
+                        </button>
+                    </form>
+                </div>
+                <th:block th:each="payment, iterStat : ${paymentList}">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <form th:action="@{/ativacao/fisico/customer/pay/{order}/{type}(order=${orderId},type=${payment.type})}" method="post">
+                            <button class="enterative-payment__button">
+                                <img th:src="@{/layout/images/payment/{image}(image=${payment.image})}" />
+                            </button>
+                        </form>
+                    </div>
+                </th:block>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                    <a th:href="@{/ativacao/fisico/customer/cancel}">
+                        <span class="mdl-button"><i class="material-icons mdl-color-text--red">close</i><th:block th:text="#{base.cancel}" /></span>
+                    </a>
+                </div>
+            </div>
+        </th:block>
+    </body>
+</html>

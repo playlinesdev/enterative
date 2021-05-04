@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/padrao}">
+<body>
+	<div layout:fragment="conteudo">
+		<div class="mdl-grid">
+			<div class="mdl-grid mdl-cell--12-col">
+				<div class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--10-col-desktop mdl-cell--1-offset-tablet mdl-cell--1-offset-desktop">					
+					<h2 class="produto__detalhe_nome">Ocorreu um erro</h2>
+					<br></br>
+					<p th:if="${url}">
+						<b>URL:</b> <span th:text="${url}">Page URL</span>
+					</p>
+					<p th:if="${exception}">
+						<b>Exceção:</b> <span th:text="${exception}">Exception</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

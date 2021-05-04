@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+    </head>
+    <body>
+        <th:block th:fragment="menu">
+            <script th:src="@{/layout/js/menu.js}"></script>
+            <header class="mdl-layout__header enterative-header">
+                <div class="mdl-layout__header-row">
+                    <span sec:authorize="isAuthenticated()" sec:authentication="name">Logged User</span>
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
+                        <i class="material-icons" style="vertical-align: middle;" role="presentation">assignment_ind</i>&nbsp;<th:block th:text="#{menu.login}" />
+                    </a>
+                    <div class="mdl-layout-spacer"></div>
+                    <a th:href="@{/ativacao/fisico/cartao}" class="mdl-button mdl-js-button enterative-header-activate__button">
+                        <i class="material-icons" role="presentation">credit_card</i>
+                        <span th:text="#{base.activate}" />
+                    </a>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <img class="enterative-header__logo" th:src="@{/layout/images/Logo.png}" />
+                <div class="mdl-navigation enterative-menu__locale">
+                    <input type="text" id="locale_select" onfocus="onLocaleFocus(this);" />
+                    <input type="hidden" id="locale_select_code" onchange="onLocaleChange(this);" />
+                </div>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" th:href="@{/}">
+                        <i class="material-icons" role="presentation">home</i><th:block th:text="#{menu.home}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/user/password}" sec:authorize="isAuthenticated()">
+                        <i class="material-icons" role="presentation">security</i><th:block th:text="#{menu.changepassword}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/ativacao/fisico/cartao}" sec:authorize="hasAnyRole('ROLE_SHOP_ADMIN', 'ROLE_CUSTOMER')">
+                        <i class="material-icons" role="presentation">credit_card</i><th:block th:text="#{menu.activatephysicalcard}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/sobre}">
+                        <i class="material-icons" role="presentation">copyright</i><th:block th:text="#{menu.about}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/privacidade}">
+                        <i class="material-icons" role="presentation">lock</i><th:block th:text="#{menu.privacyterms}" />
+                    </a>
+                </nav>
+                <nav class="mdl-navigation enterative-menu__store" sec:authorize="isAuthenticated()">
+                    <a class="mdl-navigation__link" th:href="@{/store}">
+                        <i class="material-icons" role="presentation">store</i><th:block th:text="#{menu.store}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/store/search}">
+                        <i class="material-icons" role="presentation">search</i><th:block th:text="#{menu.storesearch}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/cart}">
+                        <i class="material-icons" role="presentation">shopping_cart</i><th:block th:text="#{menu.shoppingcart}" />
+                    </a>
+                </nav>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="javascript: document.logoutForm.submit()" role="menuitem" sec:authorize="isAuthenticated()">
+                        <i class="material-icons" role="presentation">exit_to_app</i><th:block th:text="#{menu.logout}" />
+                    </a>
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden="true" type="submit" value="Sign Out" />
+                    </form>
+                </nav>
+                <nav class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_SHOP_ADMIN', 'ROLE_CUSTOMER')">
+                    <a class="mdl-navigation__link" href="#" id="menu_shop_admin_movimentacao" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="menu_shop_admin_movimentacao_icon">keyboard_arrow_right</i><th:block th:text="#{menu.operations}" />
+                    </a>
+                </nav>
+                <nav id="menu_shop_admin_movimentacao_submenu" style="display: none;" class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_SHOP_ADMIN', 'ROLE_CUSTOMER')">
+                    <a class="mdl-navigation__link" th:href="@{/account/excerpt}" sec:authorize="hasRole('ROLE_SHOP_ADMIN')">
+                        <i class="material-icons" role="presentation">monetization_on</i><th:block th:text="#{menu.accountexcerpt}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/shop/purchaseorder}" sec:authorize="hasRole('ROLE_SHOP_ADMIN')">
+                        <i class="material-icons" role="presentation">dashboard</i><th:block th:text="#{menu.purchaseorder}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/user/saleorder}" sec:authorize="hasRole('ROLE_SHOP_ADMIN')">
+                        <i class="material-icons" role="presentation">dashboard</i><th:block th:text="#{menu.saleorder}" />
+                    </a>
+                    <a class="mdl-navigation__link" th:href="@{/user/saleorder}" sec:authorize="hasRole('ROLE_CUSTOMER')">
+                        <i class="material-icons" role="presentation">dashboard</i><th:block th:text="#{menu.orders}" />
+                    </a>
+                </nav>
+                <span class="mdl-layout__header-row enterative-menu__header" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                    <th:block th:text="#{menu.administration}" />
+                </span>
+                <nav class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                    <a class="mdl-navigation__link" href="#" id="menu_cadastros" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="menu_cadastros_icon">keyboard_arrow_right</i><th:block th:text="#{menu.registration}" />
+                    </a>                    
+                </nav>
+                <nav id="menu_cadastros_submenu" style="display: none;" class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                    <a th:href="@{/admin/account}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.account}" />
+                    </a>                    
+                    <a th:href="@{/admin/accounttransactioncategory}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.accounttransactioncategory}" />
+                    </a>
+                    <a th:href="@{/admin/accounttype}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.accounttype}" />
+                    </a>
+                    <a th:href="@{/admin/cieloshopexception}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.cieloshopexception}" />
+                    </a>
+                    <a th:href="@{/admin/merchant}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.merchant}" />
+                    </a>
+                    <a th:href="@{/admin/merchantcategory}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.merchantcategory}" />
+                    </a>
+                    <a th:href="@{/admin/pagseguropaymentmethod}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.pagseguropaymentmethod}" />
+                    </a>
+                    <a th:href="@{/admin/partner}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.partner}" />
+                    </a>
+                    <a th:href="@{/admin/product}" class="mdl-navigation__link" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.product}" />
+                    </a>
+                    <a th:href="@{/admin/productcategory}" class="mdl-navigation__link" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.productcategory}" />
+                    </a>
+                    <a th:href="@{/admin/producthighlight}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.producthighlight}" />
+                    </a>
+                    <a th:href="@{/admin/producttext}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.producttext}" />
+                    </a>
+                    <a th:href="@{/admin/shop}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.shop}" />
+                    </a>
+                    <a th:href="@{/admin/shopcommissiontemplate}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.shopcommissiontemplate}" />
+                    </a>
+                    <a th:href="@{/admin/supplier}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.supplier}" />
+                    </a>
+                    <a th:href="@{/admin/fileupload}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.fileuploadlist}" />
+                    </a>
+                </nav>
+                <nav class="mdl-navigation" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="mdl-navigation__link" href="#" id="menu_infraestrutura" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="menu_infraestrutura_icon">keyboard_arrow_right</i><th:block th:text="#{menu.infrastructure}" />
+                    </a>
+                </nav>
+                <nav id="menu_infraestrutura_submenu" style="display: none;" class="mdl-navigation" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/admin/server}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.server}" />
+                    </a>
+                    <a th:href="@{/admin/resource}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.resource_server_}" />
+                    </a>
+                    <a th:href="@{/admin/parameter}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.parameter}" />
+                    </a>
+                </nav>
+                <nav class="mdl-navigation" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="mdl-navigation__link" href="#" id="menu_acesso" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="menu_acesso_icon">keyboard_arrow_right</i><th:block th:text="#{menu.access}" />
+                    </a>
+                </nav>
+                <nav id="menu_acesso_submenu" style="display: none;" class="mdl-navigation" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/admin/userrole}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.permission}" />
+                    </a>
+                    <a th:href="@{/admin/user}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">settings</i><th:block th:text="#{menu.user}" />
+                    </a>
+                </nav>
+                <nav class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                    <a class="mdl-navigation__link" href="#" id="menu_movimentacao" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="menu_movimentacao_icon">keyboard_arrow_right</i><th:block th:text="#{menu.operations}" />
+                    </a>
+                </nav>
+                <nav id="menu_movimentacao_submenu" style="display: none;" class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                    <a th:href="@{/shop/purchaseorder}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">timeline</i><th:block th:text="#{menu.purchaseorder}" />
+                    </a>
+                    <a th:href="@{/user/saleorder}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">timeline</i><th:block th:text="#{menu.saleorder}" />
+                    </a>
+                    <a th:href="@{/account/transaction}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">timeline</i><th:block th:text="#{menu.accounttransaction}" />
+                    </a>
+                    <a th:href="@{/admin/bhn/activation}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">timeline</i><th:block th:text="#{menu.bhnactivation}" />
+                    </a>
+                    <a th:href="@{/admin/bhn/transaction}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">timeline</i><th:block th:text="#{menu.bhntransaction}" />
+                    </a>
+                    <a th:href="@{/admin/epay/ticket}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">cloud_download</i><th:block th:text="#{menu.epayticket}" />
+                    </a>
+                </nav>
+                <nav class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                    <a class="mdl-navigation__link" href="#" id="menu_relatorios" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="menu_relatorios_icon">keyboard_arrow_right</i><th:block th:text="#{menu.reports}" />
+                    </a>                    
+                </nav>
+                <nav id="menu_relatorios_submenu" style="display: none;" class="mdl-navigation" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                    <a th:href="@{/account/excerpt}" class="mdl-navigation__link" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CHART_SUPPORT')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.accountexcerpt}" />
+                    </a>
+                    <a th:href="@{/account/commission}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.accountcommission}" />
+                    </a>
+                    <a th:href="@{/admin/report/accountbalance}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.accountbalance}" />
+                    </a>
+                    <a th:href="@{/admin/report/accountbalancecheck}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.accountbalancecheck}" />
+                    </a>
+                    <a th:href="@{/admin/sdfvalidation}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.sdfvalidation}" />
+                    </a>
+                    <a th:href="@{/admin/sdfvalidation/report}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.sdfvalidationreport}" />
+                    </a>
+                    <a th:href="@{/admin/report/salesbyproduct}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.salesbyproduct}" />
+                    </a>
+                    <a th:href="@{/admin/report/salesbyaccount}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.salesbyaccount}" />
+                    </a>
+                    <a th:href="@{/admin/shopcommissionreport}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.shopcommissionreport}" />
+                    </a>
+                    <a th:href="@{/admin/report/salesbyperiod}" class="mdl-navigation__link" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.salesbyperiod}" />
+                    </a>
+                </nav>
+                <nav class="mdl-navigation" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="mdl-navigation__link" href="#" id="menu_maintenance" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="menu_maintenance_icon">keyboard_arrow_right</i><th:block th:text="#{menu.maintenance}" />
+                    </a>                    
+                </nav>
+                <nav id="menu_maintenance_submenu" style="display: none;" class="mdl-navigation" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/admin/maintenance}" class="mdl-navigation__link">
+                        <i class="material-icons" role="presentation">assessment</i><th:block th:text="#{menu.maintenance}" />
+                    </a>
+                </nav>
+                <div class="mdl-layout__header-row enterative-menu__copyright enterative-layout__text--align-center">
+                    <i class="material-icons enterative-material-icons">copyright</i>2017 Enterative Serviços Digitais
+                </div>
+                <div class="mdl-layout__header-row enterative-menu__version enterative-layout__text--align-center">
+                    <th:block th:text="${T(br.com.chart.enterative.helper.EnterativeUtils).VERSION}" />
+                </div>                
+            </div>
+
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                $("#locale_select").countrySelect({
+                onlyCountries: ["br", "us"],
+                        defaultCountry: [[#{menu.locale}]],
+                        preferredCountries: [],
+                        responsiveDropdown: true
+                });
+                canRedirect = true;
+                /*]]>*/
+            </script>
+        </th:block>
+    </body>
+</html>

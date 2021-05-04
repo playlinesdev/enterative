@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{base.parameters}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{parameter.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="listHeader"></th:block>
+
+        <th:block layout:fragment="tableBody">
+            <li class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">
+                    <a th:if="${obj.id eq 0}" th:href="@{/{path}/{id}(path=${addPath}, id=${obj.param})}">
+                        <i class="material-icons mdl-list__item-avatar enterative-layout-crudform__avatar">create</i>
+                    </a>
+                    <a th:if="${obj.id ne 0}" th:href="@{/{path}/{id}(path=${editPath}, id=${obj.id})}">
+                        <i class="material-icons mdl-list__item-avatar enterative-layout-crudform__avatar">create</i>
+                    </a>
+                    <span>
+                        <th:block th:text="${obj.param.name}" />
+                    </span>
+                    <span class="mdl-list__item-text-body">
+                        <th:block th:text="${obj.value}" />
+                        <br />
+                        <th:block th:text="${obj.param.description}" />
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <th:block th:if="${obj.id eq 0}">
+                        <i class="material-icons">warning</i><th:block th:text="#{parameter.notpresent}" />
+                    </th:block>
+                </span>
+            </li>
+        </th:block>
+
+        <th:block layout:fragment="listAddButton"></th:block>
+    </body>
+</html>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="conteudo">
+            <div class="mdl-grid mdl-grid--no-spacing mdl-cell--hide-phone mdl-cell--hide-tablet">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <th:block th:text="#{base.sdfsummary}" /> [<th:block th:text="${sdfFile.name}" />] [<th:block th:text="${#dates.format(sdfFile.header.fileReportingDate, 'dd/MM/yyyy')}" th:if="${sdfFile.header.fileReportingDate ne null}"/>]
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                    <th:block th:text="#{base.file}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop" th:object="${sdfSummary}">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp enterative-table__full-width enterative-table">                
+                        <thead>
+                            <tr>
+                                <th rowspan="2" th:text="#{base.validation}" />
+                                <th rowspan="2" th:text="#{base.type}" />
+                                <th class="enterative-layout__divider-right" rowspan="2" th:text="#{base.reversal}" />
+                                <th class="enterative-layout__divider-right" rowspan="2" th:text="#{base.count}" />
+                                <th colspan="6" th:text="#{base.amounts}" />
+                            </tr>
+                            <tr>
+                                <th id="thAmountTransaction">T</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountTransaction" th:text="#{base.transaction}" />
+                                <th id="thAmountConsumerFee">CF</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountConsumerFee" th:text="#{base.consumerfee}" />
+                                <th id="thAmountCommission">C</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountCommission" th:text="#{base.commission}" />
+                                <th id="thAmountTaxTransaction">TT</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountTaxTransaction" th:text="#{base.taxtransaction}" />
+                                <th id="thAmountTaxCommission">TC</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountTaxCommission" th:text="#{base.taxcommission}" />
+                                <th id="thAmountNet">N</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountNet" th:text="#{base.net}" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <th:block th:each="detail : *{details}">
+                                <tr>
+                                    <td>
+                                        <i id="iNotFound_" th:attrappend="id=${detail.id}" class="material-icons mdl-color-text--red" th:if="${detail.status == T(br.com.chart.enterative.enums.SDF_DETAIL_STATUS).NOT_FOUND}">error</i>
+                                        <span class="mdl-tooltip mdl-tooltip--large" for="iNotFound_" th:attrappend="for=${detail.id}">Não encontrada</span>
+
+                                        <i id="iFoundWrong_" th:attrappend="id=${detail.id}" class="material-icons mdl-color-text--amber" th:if="${detail.status == T(br.com.chart.enterative.enums.SDF_DETAIL_STATUS).FOUND_WRONG}">done</i>
+                                        <span class="mdl-tooltip mdl-tooltip--large" for="iFoundWrong_" th:attrappend="for=${detail.id}">Encontrada<br/>manualmente</span>
+
+                                        <i id="iFound_" th:attrappend="id=${detail.id}" class="material-icons mdl-color-text--green" th:if="${detail.status == T(br.com.chart.enterative.enums.SDF_DETAIL_STATUS).FOUND}">done_all</i>
+                                        <span class="mdl-tooltip mdl-tooltip--large" for="iFound_" th:attrappend="for=${detail.id}">Encontrada</span>
+                                    </td>
+                                    <td th:text="${detail.transactionType}"></td>
+                                    <td class="enterative-layout__divider-right" th:text="${detail.reversalTypeCode}"></td>
+                                    <td class="enterative-layout__divider-right" th:text="${detail.count}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.transactionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.consumerFeeAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.commissionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.taxTransactionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.taxCommissionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.netAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="enterative-layout__divider-right" colspan="3">&Sigma;</td>
+                                <td class="enterative-layout__divider-right" th:text="${#aggregates.sum(sdfSummary.details.![count])}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.details.![transactionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.details.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.details.![consumerFeeAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.details.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.details.![commissionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.details.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.details.![taxTransactionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.details.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.details.![taxCommissionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.details.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.details.![netAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.details.empty}"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                    <th:block th:text="#{base.transactions}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop" th:object="${sdfSummary}">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp enterative-table__full-width enterative-table">                
+                        <thead>
+                            <tr>
+                                <th rowspan="2" th:text="#{base.validation}" />
+                                <th rowspan="2" th:text="#{base.status}" />
+                                <th class="enterative-layout__divider-right" rowspan="2" th:text="#{base.type}" />
+                                <th class="enterative-layout__divider-right" rowspan="2" th:text="#{base.count}" />
+                                <th colspan="6" th:text="#{base.amounts}" />
+                            </tr>
+                            <tr>                                    
+                                <th id="thAmountTransactionT">T</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountTransactionT" th:text="#{base.transaction}" />
+                                <th id="thAmountConsumerFeeT">CF</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountConsumerFeeT" th:text="#{base.consumerfee}" />
+                                <th id="thAmountCommissionT">C</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountCommissionT" th:text="#{base.commission}" />
+                                <th id="thAmountTaxTransactionT">TT</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountTaxTransactionT" th:text="#{base.taxtransaction}" />
+                                <th id="thAmountTaxCommissionT">TC</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountTaxCommissionT" th:text="#{base.taxcommission}" />
+                                <th id="thAmountNetT">N</th>
+                                <span class="mdl-tooltip mdl-tooltip--large" for="thAmountNetT" th:text="#{base.net}" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <th:block th:each="detail : *{transactions}">
+                                <tr>
+                                    <td>
+                                        <i id="iNotFoundT_" th:attrappend="id=${detail.id}" class="material-icons mdl-color-text--red" th:if="${detail.detailStatus == T(br.com.chart.enterative.enums.SDF_DETAIL_STATUS).NOT_FOUND}">error</i>
+                                        <span class="mdl-tooltip mdl-tooltip--large" for="iNotFoundT_" th:attrappend="for=${detail.id}">Não encontrada</span>
+
+                                        <i id="iFoundWrongT_" th:attrappend="id=${detail.id}" class="material-icons mdl-color-text--amber" th:if="${detail.detailStatus == T(br.com.chart.enterative.enums.SDF_DETAIL_STATUS).FOUND_WRONG}">done</i>
+                                        <span class="mdl-tooltip mdl-tooltip--large" for="iFoundWrongT_" th:attrappend="for=${detail.id}">Encontrada<br/>manualmente</span>
+
+                                        <i id="iFoundT_" th:attrappend="id=${detail.id}" class="material-icons mdl-color-text--green" th:if="${detail.detailStatus == T(br.com.chart.enterative.enums.SDF_DETAIL_STATUS).FOUND}">done_all</i>
+                                        <span class="mdl-tooltip mdl-tooltip--large" for="iFoundT_" th:attrappend="for=${detail.id}">Encontrada</span>
+                                    </td>
+                                    <td th:text="${detail.status}"></td>
+                                    <td class="enterative-layout__divider-right" th:text="${detail.type}"></td>
+                                    <td class="enterative-layout__divider-right" th:text="${detail.count}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.transactionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.consumerFeeAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.commissionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.taxTransactionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.taxCommissionAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatDecimal(detail.netAmount, 0, 'POINT', 2, 'COMMA')}"></td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="enterative-layout__divider-right" colspan="3">&Sigma;</td>
+                                <td class="enterative-layout__divider-right" th:text="${#aggregates.sum(sdfSummary.transactions.![count])}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.transactions.![transactionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.transactions.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.transactions.![consumerFeeAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.transactions.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.transactions.![commissionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.transactions.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.transactions.![taxTransactionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.transactions.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.transactions.![taxCommissionAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.transactions.empty}"></td>
+                                <td th:text="${#numbers.formatDecimal(#aggregates.sum(sdfSummary.transactions.![netAmount]), 0, 'POINT', 2, 'COMMA')}" th:if="${!sdfSummary.transactions.empty}"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                    <th:block th:text="#{base.differences}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.count}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-readonly">
+                            <span th:text="${sdfSummary.difference.count}" th:classappend="${sdfSummary.difference.count ne 0} ? mdl-color-text--red : mdl-color-text--green"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.transaction}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-readonly">
+                            <span th:text="${#numbers.formatDecimal(sdfSummary.difference.transactionAmount, 0, 'POINT', 2, 'COMMA')}" th:classappend="${sdfSummary.difference.transactionAmount ne 0} ? mdl-color-text--red : mdl-color-text--green"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.consumerfee}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-readonly">
+                            <span th:text="${#numbers.formatDecimal(sdfSummary.difference.consumerFeeAmount, 0, 'POINT', 2, 'COMMA')}" th:classappend="${sdfSummary.difference.consumerFeeAmount ne 0} ? mdl-color-text--red : mdl-color-text--green"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.commission}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-readonly">
+                            <span th:text="${#numbers.formatDecimal(sdfSummary.difference.commissionAmount, 0, 'POINT', 2, 'COMMA')}" th:classappend="${sdfSummary.difference.commissionAmount ne 0} ? mdl-color-text--red : mdl-color-text--green"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.taxtransaction}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-readonly">
+                            <span th:text="${#numbers.formatDecimal(sdfSummary.difference.taxTransactionAmount, 0, 'POINT', 2, 'COMMA')}" th:classappend="${sdfSummary.difference.taxTransactionAmount ne 0} ? mdl-color-text--red : mdl-color-text--green"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.taxcommission}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-readonly">
+                            <span th:text="${#numbers.formatDecimal(sdfSummary.difference.taxCommissionAmount, 0, 'POINT', 2, 'COMMA')}" th:classappend="${sdfSummary.difference.taxCommissionAmount ne 0} ? mdl-color-text--red : mdl-color-text--green"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop"></div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.net}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-readonly">
+                            <span th:text="${#numbers.formatDecimal(sdfSummary.difference.netAmount, 0, 'POINT', 2, 'COMMA')}" th:classappend="${sdfSummary.difference.netAmount ne 0} ? mdl-color-text--red : mdl-color-text--green"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                    <a th:href="@{/admin/sdfvalidation/save/{id}(id=${sdfFile.id})}"><span class="mdl-button"><i class="material-icons mdl-color-text--green">save</i><th:block th:text="#{base.save}" /></span></a>
+                    <a th:href="@{/admin/sdfvalidation/assemble/{id}(id=${sdfFile.id})}"><span class="mdl-button"><i class="material-icons mdl-color-text--blue">arrow_back</i><th:block th:text="#{base.return}" /></span></a>
+                </div>
+            </div>
+        </th:block>
+    </body>
+</html>

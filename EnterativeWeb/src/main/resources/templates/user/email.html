@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <th:block layout:fragment="additionalHead" />
+    </body>
+    <th:block layout:fragment="conteudo">
+        <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                <th:block th:text="#{user.new}" />
+            </div>
+            <div th:if="${errorMessage ne null}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__error">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center">
+                        <i class="material-icons mdl-color-text--red">error</i>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--10-col-desktop enterative-layout__text--align-center">
+                        <th:block th:utext="#{__${errorMessage}__}" th:if="${translated eq false}" />
+                        <th:block th:utext="${errorMessage}" th:if="${translated eq true}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center"></div>
+                </div>
+            </div>
+            <div th:if="${errorMessage eq null}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-newuser__welcome">
+                <th:block th:text="#{user.successfulconfirmation.1}" /><br /><th:block th:text="#{user.successfulconfirmation.2}" />
+            </div>
+            <div th:if="${errorMessage eq null}"  class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-newuser__welcome">
+                <a th:href="@{/login}">
+                    <i class="material-icons" style="vertical-align: middle; margin-right: 10px;" role="presentation">assignment_ind</i><th:block th:text="#{menu.login}" />
+                </a>
+            </div>
+        </div>
+    </th:block>
+</html>

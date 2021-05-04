@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="additionalHead" />
+
+        <th:block layout:fragment="listHeader">
+            <div class="mdl-grid mdl-shadow--2dp enterative-form__excerpt" sec:authorize="hasRole('ROLE_ENTERATIVE_BALANCE')" th:if="${shopBalance}">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <th:block th:text="#{shop.excerpt}" />
+                </div>
+                <div th:text="${'R$ ' + #numbers.formatDecimal(shopBalance,0,'POINT',2, 'COMMA')}" th:classappend="${shopBalance le 0} ? mdl-color-text--red : mdl-color-text--green" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center"></div>
+            </div>
+            <form th:action="@{/shop/purchaseorder}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.search}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <th:block th:text="#{base.shop}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="tShops" th:text="#{base.shops}" />
+                            <select class="mdl-textfield__input" id="tShops" th:field="*{shop}">
+                                <option value=""></option>
+                                <option th:each="s : ${shop_list}" th:value="${s.id}" th:text="${s.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <th:block th:text="#{base.account}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="tAccounts" th:text="#{base.accounts}" />
+                            <select class="mdl-textfield__input" id="tAccounts" th:field="*{account}">
+                                <option value=""></option>
+                                <option th:each="a : ${account_list}" th:value="${a.id}" th:text="${a.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.search.startdate}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__date" type="text" id="dataInicio" th:field="*{startDate}" />
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.search.enddate}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__date" type="text" id="dataFinal" th:field="*{endDate}" />
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{purchase.order}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{purchase.order.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="tableBody_primary">
+            <span>
+                <th:block th:text="${#dates.format(obj.createdAt, 'dd/MM/yyyy HH:mm')}" th:if="${obj.createdAt}" />                                
+            </span>
+            <span class="mdl-list__item-text-body">
+                <th:block th:text="#{purchase.order.number}" />&nbsp;
+                <th:block th:text="${obj.id}" />
+                <br />
+                <th:block th:text="${'R$ ' + #numbers.formatDecimal(obj.totalAmount,0,'POINT',2,'COMMA')}" th:if="${obj.totalAmount}" />
+            </span>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_secondary">
+            <span class="mdl-list__item-secondary-content">
+                <i id="iPending_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.PURCHASE_ORDER_STATUS).PENDING}">alarm</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iPending_" th:attrappend="for=${obj.id}"><th:block th:text="#{base.pending}" /></span>
+
+                <i id="iDenied_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.PURCHASE_ORDER_STATUS).DENIED}">error</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iDenied_" th:attrappend="for=${obj.id}"><th:block th:text="#{base.denied}" /></span>
+
+                <i id="iActivated_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.PURCHASE_ORDER_STATUS).ACTIVE}">done</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iActivated_" th:attrappend="for=${obj.id}"><th:block th:text="#{base.active}" /></span>
+            </span>
+        </th:block>
+    </body>
+</html>

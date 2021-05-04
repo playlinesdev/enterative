@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="additionalHead" />
+
+        <th:block layout:fragment="listHeader">
+            <form th:action="@{/admin/bhn/activation}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.search}" />
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.id}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="id" th:field="*{id}" />
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.externalcode}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="externalCode" th:field="*{externalCode}" />
+                        </div>
+                    </div>
+                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.search.startdate}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__date" type="text" id="dataInicio" th:field="*{startDate}" />
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.search.enddate}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input enterative-inputmask__date" type="text" id="dataFinal" th:field="*{endDate}" />
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{bhn.activation}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{bhn.activation.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="tableBody_primary">
+            <th:block th:text="${obj.id}" />
+            <span class="mdl-list__item-text-body">
+                <th:block th:text="${obj.externalCode}" />
+            </span>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_secondary">
+            <span class="mdl-list__item-secondary-content">
+                <i id="iStatusOther_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${obj.status != T(br.com.chart.enterative.enums.ACTIVATION_STATUS).PROCESSED && obj.status != T(br.com.chart.enterative.enums.ACTIVATION_STATUS).CANCELED}">watch_later</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iStatusOther_" th:attrappend="for=${obj.id}" th:text="#{base.pending}" />
+
+                <i id="iStatusCanceled_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.ACTIVATION_STATUS).CANCELED}">not_interested</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iStatusCanceled_" th:attrappend="for=${obj.id}" th:text="#{base.canceled}" />
+
+                <i id="iStatusProcessed_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.ACTIVATION_STATUS).PROCESSED}">done</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iStatusProcessed_" th:attrappend="for=${obj.id}" th:text="#{base.processed}" />
+            </span>
+        </th:block>
+    </body>
+</html>

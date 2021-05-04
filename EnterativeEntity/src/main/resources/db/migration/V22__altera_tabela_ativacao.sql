@@ -1,0 +1,1 @@
+ALTER TABLE ativacao ADD COLUMN tipo INT(4);

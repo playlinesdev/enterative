@@ -1,0 +1,1 @@
+UPDATE product SET image_path = 'habbo.jpg' WHERE ean = '5051644048450';

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{base.servers}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{server.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="listHeader">
+            <form th:action="@{/admin/server}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.search}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.name}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="name" th:field="*{name}" />                            
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_primary">
+            <span>
+                <th:block th:text="${obj.name}" />
+            </span>
+            <span class="mdl-list__item-text-body">
+                <th:block th:text="${obj.echoProduct.name}" th:if="${obj.echoProduct}" />
+                &nbsp;-&nbsp;
+                <th:block th:text="${obj.sequence}" />
+                <br />
+                <th:block th:text="#{__${obj.activationProcess.description}__}" />
+            </span>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_secondary">
+            <span class="mdl-list__item-secondary-content">
+                <i id="iInactive_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.STATUS).INACTIVE}">error</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iInactive_" th:attrappend="for=${obj.id}" th:text="#{base.inactive}" />
+
+                <i id="iCanceled_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--red mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.STATUS).CANCELED}">block</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iCanceled_" th:attrappend="for=${obj.id}" th:text="#{base.canceled}" />
+
+                <i id="iActivated_" th:attrappend="id=${obj.id}" class="material-icons mdl-color-text--green mdl-list__item-secondary-action" th:if="${obj.status == T(br.com.chart.enterative.enums.STATUS).ACTIVE}">done</i>
+                <span class="mdl-tooltip mdl-tooltip--large" for="iActivated_" th:attrappend="for=${obj.id}" th:text="#{base.activated}" />
+            </span>
+        </th:block>
+    </body>
+</html>

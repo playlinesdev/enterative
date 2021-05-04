@@ -1,0 +1,1 @@
+ALTER TABLE purchase_order_line MODIFY name VARCHAR(2000);

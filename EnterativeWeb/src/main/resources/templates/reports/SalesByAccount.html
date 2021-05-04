@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title><th:block th:text="#{base.salesbyaccount}" /></title>
+        <style>
+            @page { size: A4 landscape; }
+
+            p, td {
+                font-size: 13px;
+            }
+
+            .enterative-layout__block--align-center {
+                text-align: center;
+                display: table;
+                margin: 0 auto;
+            }
+
+            .enterative-layout-list--divider-top {
+                border-top: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-top-white {
+                border-top: none !important;
+            }
+
+            .enterative-layout-list--divider-right {
+                border-right: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-bottom-white {
+                border-bottom: none !important;
+            }
+
+            .enterative-layout-list--divider-bottom {
+                border-bottom: 1px solid gray;
+            }
+
+            .enterative-layout-list--divider-left {
+                border-left:  1px solid gray;
+            }
+
+            .enterative-layout-table--center-content * {
+                text-align: center;
+            }
+
+            .mdl-data-table {                
+                border: 1px solid gray;
+                white-space:nowrap;                
+                background-color: #fff;
+                border-spacing: 0px;
+                width: 98%;
+                -fs-table-paginate: paginate;
+            }
+
+            .mdl-data-table tr {                
+                height: 30px;                
+            }
+
+            .mdl-data-table td {
+                height:30px;                
+                padding: 2px 8px;                
+                vertical-align: middle;
+            }
+
+            .mdl-data-table th {                
+                vertical-align:middle;                
+                font-weight:700;
+                line-height:24px;
+                letter-spacing:0;
+                height:30px;
+                font-size:12px;
+                color:rgba(0,0,0,.54);                             
+                padding: 0 8px 2px 8px;
+            }
+
+            .odd {
+                /*background-color: #f9f9f9;*/
+                background-color: white;
+            }
+
+            .odd > td {
+                border-bottom: 1px solid gray;
+                border-top: 1px solid gray;
+            }
+
+            .even {
+                background-color: white !important;
+            }
+
+            .enterative-layout__text--align-center {
+                text-align: center !important;
+            }
+
+            .enterative-layout-left--text {
+                text-align: left !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="enterative-layout__block--align-center">
+            <h2><th:block th:text="#{base.salesbyaccount}" /></h2>
+        </div>
+        <table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content">
+            <thead>
+                <tr>
+                    <th th:text="#{base.account}" colspan="6"></th>
+                    <th th:text="#{base.account}" colspan="6"></th>
+                </tr>
+            </thead>
+            <tbody th:if="${objectList.length > 0}">
+                <th:block th:each="index : ${#numbers.sequence(0, objectList.length, 2)}">
+                    <tr th:if="${index lt objectList.length}">
+                        <td colspan="6" th:if="${index lt objectList.length}" th:text="${objectList[index].account.name}" class="enterative-layout-list--divider-bottom enterative-layout-list--divider-top"></td>
+
+                        <td colspan="6" th:if="${(index + 1) lt objectList.length}" th:text="${objectList[index + 1].account.name}" class="enterative-layout-list--divider-bottom enterative-layout-list--divider-top"></td>
+                    </tr>
+                    <tr th:if="${index lt objectList.length}">
+                        <th th:text="#{base.period}" class="enterative-layout-list--divider-right enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.qty}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.amount}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.chart}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.account}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.profit}" class="enterative-layout-list--divider-right enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.period}" class="enterative-layout-list--divider-right enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.qty}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.amount}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.chart}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.account}" class="enterative-layout-list--divider-bottom"></th>
+                        <th th:text="#{base.profit}" class="enterative-layout-list--divider-bottom"></th>
+                    </tr>
+                    <th:block th:each="key, keyStat : ${keys}" th:if="${index lt objectList.length}">
+                        <tr>
+                            <td th:text="${key}" class="enterative-layout-list--divider-right"></td>
+                            <td th:text="${objectList[index].items['__${key}__'].quantity}"></td>                            
+                            <td th:text="${#numbers.formatDecimal(objectList[index].items['__${key}__'].amount, 0, 'POINT', 2, 'COMMA')}"></td>
+                            <td th:text="${#numbers.formatDecimal(objectList[index].items['__${key}__'].chartCommission, 0, 'POINT', 2, 'COMMA')}"></td>
+                            <td th:text="${#numbers.formatDecimal(objectList[index].items['__${key}__'].accountCommission, 0, 'POINT', 2, 'COMMA')}"></td>
+                            <td th:text="${#numbers.formatDecimal(objectList[index].items['__${key}__'].profit, 0, 'POINT', 2, 'COMMA')}" class="enterative-layout-list--divider-right"></td>
+
+                            <td th:if="${(index + 1) lt objectList.length}" th:text="${key}" class="enterative-layout-list--divider-right"></td>
+                            <td th:text="${objectList[index + 1].items['__${key}__'].quantity}" th:if="${(index + 1) lt objectList.length}"></td>                            
+                            <td th:text="${#numbers.formatDecimal(objectList[index + 1].items['__${key}__'].amount, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}"></td>
+                            <td th:text="${#numbers.formatDecimal(objectList[index + 1].items['__${key}__'].chartCommission, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}"></td>
+                            <td th:text="${#numbers.formatDecimal(objectList[index + 1].items['__${key}__'].accountCommission, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}"></td>
+                            <td th:text="${#numbers.formatDecimal(objectList[index + 1].items['__${key}__'].profit, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}"></td>
+                        </tr>
+                    </th:block>
+                    <tr th:if="${index lt objectList.length}">
+                        <th th:text="#{base.totals}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></th>
+                        <td th:text="${objectList[index].quantity}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index].amount, 0, 'POINT', 2, 'COMMA')}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index].chartCommission, 0, 'POINT', 2, 'COMMA')}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index].accountCommission, 0, 'POINT', 2, 'COMMA')}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index].profit, 0, 'POINT', 2, 'COMMA')}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></td>
+                        <th th:text="#{base.totals}" class="enterative-layout-list--divider-top enterative-layout-list--divider-right"></th>
+                        <td th:text="${objectList[index + 1].quantity}" th:if="${(index + 1) lt objectList.length}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index + 1].amount, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index + 1].chartCommission, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index + 1].accountCommission, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}" class="enterative-layout-list--divider-top"></td>
+                        <td th:text="${#numbers.formatDecimal(objectList[index + 1].profit, 0, 'POINT', 2, 'COMMA')}" th:if="${(index + 1) lt objectList.length}" class="enterative-layout-list--divider-top"></td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+        <br/>
+        <table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content">
+            <thead>
+                <tr>
+                    <th th:text="#{base.account}" class="enterative-layout-list--divider-right enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.qty}" class="enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.amount}" class="enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.chart}" class="enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.account}" class="enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.profit}" class="enterative-layout-list--divider-bottom"></th>
+                </tr>
+            </thead>
+            <tbody th:if="${objectList.length > 0}">
+                <th:block th:each="obj : ${objectList}">
+                    <tr>
+                        <td th:text="${obj.account.name}" class="enterative-layout-list--divider-right"></td>
+                        <td th:text="${obj.quantity}"></td>
+                        <td th:text="${#numbers.formatDecimal(obj.amount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td th:text="${#numbers.formatDecimal(obj.chartCommission, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td th:text="${#numbers.formatDecimal(obj.accountCommission, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td th:text="${#numbers.formatDecimal(obj.profit, 0, 'POINT', 2, 'COMMA')}"></td>
+                    </tr>
+                </th:block>
+                <tr>
+                    <th class="enterative-layout-list--divider-right enterative-layout-list--divider-top" th:text="#{base.totals}"></th>
+                    <td class="enterative-layout-list--divider-top" th:text="${#aggregates.sum(objectList.![quantity])}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![amount]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![chartCommission]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![accountCommission]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![profit]), 0, 'POINT', 2, 'COMMA')}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <div class="enterative-layout__block--align-center">
+            <h3><th:block th:text="#{base.payments}" /></h3>
+        </div>
+        <table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content">
+            <thead>
+                <tr>
+                    <th th:text="#{base.account}" class="enterative-layout-list--divider-right enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.enterativepay}" class="enterative-layout-list--divider-bottom"></th>                    
+                    <th th:text="#{base.cielo}" class="enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.pagseguro}" class="enterative-layout-list--divider-bottom"></th>
+                </tr>
+            </thead>
+            <tbody th:if="${objectList.length > 0}">
+                <th:block th:each="obj : ${objectList}">
+                    <tr>
+                        <td th:text="${obj.account.name}" class="enterative-layout-list--divider-right"></td>
+                        <td th:text="${#numbers.formatDecimal(obj.payments['ENTERATIVEPAY'].amount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td th:text="${#numbers.formatDecimal(obj.payments['CIELO'].amount, 0, 'POINT', 2, 'COMMA')}"></td>
+                        <td th:text="${#numbers.formatDecimal(obj.payments['PAGSEGURO'].amount, 0, 'POINT', 2, 'COMMA')}"></td>
+                    </tr>
+                </th:block>
+                <tr>
+                    <th class="enterative-layout-list--divider-right enterative-layout-list--divider-top" th:text="#{base.totals}"></th>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![payments['ENTERATIVEPAY'].amount]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![payments['CIELO'].amount]), 0, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![payments['PAGSEGURO'].amount]), 0, 'POINT', 2, 'COMMA')}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

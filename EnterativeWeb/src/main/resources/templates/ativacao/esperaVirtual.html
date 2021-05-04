@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+<body>
+<th:block layout:fragment="additionalHead">
+    <script th:src="@{/layout/js/ativacao_callback_virtual.js}"></script>
+</th:block>
+<div layout:fragment="conteudo">
+    <input class="mdl-textfield__input" type="hidden" id="id" th:value="${pedido}"/>
+    <div class="mdl-grid">
+        <div class="enterative-error__card enterative-layout__block--align-center mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-card__title mdl-card--expand">
+                <h2 class="mdl-card__title-text enterative-layout__block--align-center" th:text="#{__${info_title}__}"></h2>
+            </div>
+            <div class="mdl-card__supporting-text enterative-card__supporting-text">
+                <p class="enterative-layout__block--align-center" th:text="#{__${info_desc}__}"></p>
+            </div>
+            <div class="mdl-card__supporting-text enterative-card__supporting-text">
+                <p class="enterative-layout__block--align-center">
+                    <th:block th:text="#{activation.dontupdateorclose_}"/>
+                </p>
+            </div>
+            <div class="mdl-card__supporting-text enterative-card__supporting-text">
+                <div class="mdl-spinner mdl-js-spinner is-active enterative-layout__block--align-center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

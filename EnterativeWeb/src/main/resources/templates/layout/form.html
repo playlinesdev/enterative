@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <form th:action="@{/{path}(path=${saveActionPath})}" method="post" th:object="${activeObject}" id="crud_form">
+                <th:block layout:fragment="hiddenFields" />
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block layout:fragment="form_title" />
+                    </div>
+                    <th:block layout:fragment="form_error">
+                        <div th:if="${errorMessage != null}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__error">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center">
+                                    <i class="material-icons mdl-color-text--red">error</i>
+                                </div>
+                                <div class="mdl-cell mdl-cell--3-col-phone mdl-cell--5-col-tablet mdl-cell--11-col-desktop enterative-layout__text--align-center">
+                                    <th:block th:utext="${errorMessage}" />
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                    <th:block layout:fragment="form_body" />
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                        <button th:if="${saveActionPath != null}" class="mdl-button" sec:authorize="hasRole('ROLE_ADMIN')"><i class="material-icons mdl-color-text--green">save</i><th:block th:text="#{base.save}" /></button>
+                        <a th:href="@{/{path}(path=${crudHomePath})}"><span class="mdl-button"><i class="material-icons mdl-color-text--blue">chevron_left</i><th:block th:text="#{base.return}" /></span></a>
+                        <th:block layout:fragment="form_actions" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

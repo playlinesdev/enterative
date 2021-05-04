@@ -1,0 +1,1 @@
+ALTER TABLE shopping_cart ADD COLUMN sale_order_id BIGINT(20);

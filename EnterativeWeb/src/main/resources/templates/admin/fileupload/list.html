@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{base.fileupload}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{fileupload.empty_}" />
+        </th:block>
+
+        <th:block layout:fragment="listHeader">
+            <form th:action="@{/admin/fileupload}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.search}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.objectid}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="name" th:field="*{objectID}" />
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.type}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <select class="mdl-textfield__input" id="type" th:field="*{type}">
+                                <option value=""></option>
+                                <option th:each="type : ${type_list}" th:value="${type}" th:text="#{__${type.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_primary">
+            <span>
+                <th:block th:text="${obj.name}" />
+            </span>
+            <span class="mdl-list__item-text-body">
+                <th:block th:text="${obj.objectName}" /><br /><th:block th:text="${obj.type}" />
+            </span>
+        </th:block>
+
+        <th:block layout:fragment="tableBody_secondary">
+            <span class="mdl-list__item-secondary-content enterative-layout__block--align-center mdl-badge--overlap">
+                <th:block th:if="${obj.type eq T(br.com.chart.enterative.enums.FILE_TYPE).PRODUCT_IMAGE}">
+                    <img class="enterative-layout-list__item-image" th:src="${'data:image/png;base64, ' + obj.fileData}" />
+                </th:block>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+                <a id="aRemove_" th:attrappend="id=${obj.id}" th:href="@{/admin/fileupload/remove/{id}(id=${obj.id})}" class="mdl-button mdl-js-button mdl-js-ripple-effect" >
+                    <i class="material-icons">delete</i>
+                </a>
+                <span class="mdl-tooltip mdl-tooltip--large" for="aRemove_" th:attrappend="for=${obj.id}" th:text="#{base.remove}" />
+            </span>
+        </th:block>
+    </body>
+</html>

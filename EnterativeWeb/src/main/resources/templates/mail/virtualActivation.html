@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title><th:block th:text="#{__${subject}__}" /></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p th:text="#{virtual.activation.messagePin}"></p>
+
+        <table style="width: 100%">
+<!--            <thead>
+                <tr>
+                    <th style="border-top: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black;" colspan="2" th:text="#{virtual.activation.name}"></th>
+                    <th style="border-top: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black;" colspan="2" th:text="#{virtual.activation.pin}"></th>
+                    <th style="border-top: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;" colspan="2" th:text="#{virtual.activation.cardnumber}"></th>
+                </tr>
+                <tr>
+                    <th style="border-bottom: 1px solid black; border-left: 1px solid black;" colspan="3" th:text="#{virtual.activation.terms}"></th>
+                    <th style="border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;" colspan="3" th:text="#{virtual.activation.redemption}"></th>
+                </tr>
+            </thead>-->
+            <tbody>
+                <th:block th:each="line : ${lines}">
+                    <tr>
+                        <td style="border-right: 1px solid black;" th:text="#{virtual.activation.name}"></td>
+                        <td th:text="${line.product.displayName}"></td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid black;" th:text="#{virtual.activation.pin}"></td>
+                        <td th:text="${line.pin}"></td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid black;" th:text="#{virtual.activation.cardnumber}"></td>
+                        <td th:text="${line.cardNumber}"></td>                        
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid black;" th:text="#{virtual.activation.terms}"></td>
+                        <td th:text="${line.terms}"></td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid black; border-bottom: 1px solid black;" th:text="#{virtual.activation.redemption}"></td>
+                        <td style="border-bottom: 1px solid black;" th:text="${line.redemption}"></td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+
+        <p>
+            <th:block th:text="#{mail.sincerely}" />,
+        </p>
+        <p>
+            <img src="https://enterativeapk.tk/enterative/layout/images/Logo.png" style="max-height: 100px;" />
+        </p>        
+    </body>
+</html>

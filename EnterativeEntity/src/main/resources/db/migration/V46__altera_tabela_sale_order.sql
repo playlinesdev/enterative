@@ -1,0 +1,1 @@
+ALTER TABLE sale_order ADD COLUMN customer_mobile VARCHAR(11);

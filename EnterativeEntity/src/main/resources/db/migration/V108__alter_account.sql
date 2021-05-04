@@ -1,0 +1,1 @@
+ALTER TABLE account ADD COLUMN balance_threshold DECIMAL(20, 6) DEFAULT 0;

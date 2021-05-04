@@ -1,0 +1,1 @@
+ALTER TABLE usuarioweb ADD COLUMN token VARCHAR(80);

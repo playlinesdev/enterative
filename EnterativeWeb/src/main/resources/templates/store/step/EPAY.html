@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <form th:action="@{/store/step/{productId}(productId=${product.id})}" method="post" th:object="${stepVO}">
+                <input type="hidden" th:field="*{currentStep}" />
+                <input type="hidden" th:field="*{totalSteps}" />
+
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block th:text="${product.displayName}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block th:text="#{base.step}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__title">
+                        <th:block th:text="*{currentStep}" />&nbsp;<th:block th:text="#{base.of}" />&nbsp;<th:block th:text="*{totalSteps}" />
+                    </div>
+                    <div th:if="*{currentStep eq 1}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.operator}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <select class="mdl-textfield__input" id="operator" th:field="*{displayCatalog}">
+                                        <option value=""></option>
+                                        <option th:each="catalog : ${displayCatalogs}" th:value="${catalog}" th:text="${catalog.displayGroup}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="*{currentStep eq 2}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <input type="hidden" th:field="*{displayCatalog}" />
+
+                        <div class="mdl-grid mdl-grid--no-spacing" th:if="*{displayCatalog.productType eq 'Topup'}">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.areacode}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input enterative-inputmask__code2" type="text" id="areaCode" autofocus="autofocus" th:field="*{areaCode}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdl-grid mdl-grid--no-spacing" th:if="*{displayCatalog.productType eq 'TV'}">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.amount}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <select class="mdl-textfield__input" id="product" th:field="*{product}">
+                                        <option value=""></option>
+                                        <option th:each="catalog : ${catalogs}" th:value="${catalog.productId}" th:text="${'R$ ' + #numbers.formatDecimal(catalog.amount,0,'POINT',2,'COMMA')}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="*{currentStep eq 3}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <input type="hidden" th:field="*{displayCatalog}" />
+                        <input type="hidden" th:field="*{areaCode}" />
+
+                        <div class="mdl-grid mdl-grid--no-spacing" th:if="*{displayCatalog.productType eq 'Topup'}">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.amount}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <select class="mdl-textfield__input" id="product" th:field="*{product}">
+                                        <option value=""></option>
+                                        <option th:each="catalog : ${catalogs}" th:value="${catalog.productId}" th:text="${'R$ ' + #numbers.formatDecimal(catalog.amount,0,'POINT',2,'COMMA')}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-grid mdl-grid--no-spacing" th:if="*{displayCatalog.productType eq 'TV'}">
+                            <input type="hidden" th:field="*{product}" />
+
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.cpfContrato}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="contractCpf" autofocus="autofocus" th:field="*{contractCPF}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="*{currentStep eq 4}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <input type="hidden" th:field="*{displayCatalog}" />
+                        <input type="hidden" th:field="*{areaCode}" />
+                        <input type="hidden" th:field="*{product}" />
+
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.phone}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input enterative-inputmask__phone" type="text" id="phone" autofocus="autofocus" th:field="*{phone}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="*{currentStep eq 5}" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                        <input type="hidden" th:field="*{displayCatalog}" />
+                        <input type="hidden" th:field="*{areaCode}" />
+                        <input type="hidden" th:field="*{product}" />
+                        <input type="hidden" th:field="*{phone}" />
+                        <input type="hidden" th:field="*{productJson}" />
+                        <input type="hidden" th:field="*{contractCPF}" />
+
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.operator}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <th:block th:text="*{displayCatalog.displayGroup}" />
+                            </div>
+                            <div th:if="*{displayCatalog.productType eq 'Topup'}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.areacode}" />
+                            </div>
+                            <div th:if="*{displayCatalog.productType eq 'Topup'}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <th:block th:text="*{areaCode}" />
+                            </div>
+                            <div th:if="*{displayCatalog.productType eq 'TV'}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.cpfContrato}" />
+                            </div>
+                            <div th:if="*{displayCatalog.productType eq 'TV'}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <th:block th:text="*{contractCPF}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.amount}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <th:block th:text="*{'R$ ' + #numbers.formatDecimal(product.amount,0,'POINT',2,'COMMA')}" />
+                            </div>
+                            <div th:if="*{displayCatalog.productType eq 'Topup'}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                                <th:block th:text="#{base.phone}" />
+                            </div>
+                            <div th:if="*{displayCatalog.productType eq 'Topup'}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                                <span class="enterative-inputmask__phone" th:text="*{phone}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                        <a th:href="@{/store}"><span class="mdl-button"><i class="material-icons mdl-color-text--blue">shopping_cart</i><th:block th:text="#{base.returnstore}" /></span></a>
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons mdl-color-text--green" th:if="*{currentStep ne totalSteps}">chevron_right</i><th:block th:if="*{currentStep ne totalSteps}" th:text="#{base.next}" />
+                            <i class="material-icons mdl-color-text--green" th:if="*{currentStep eq totalSteps}">add_shopping_cart</i><th:block th:if="*{currentStep eq totalSteps}" th:text="#{base.buy}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

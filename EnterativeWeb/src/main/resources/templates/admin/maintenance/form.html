@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+<body>
+<div layout:fragment="conteudo">
+    <div class="mdl-grid mdl-grid--no-spacing">
+        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+            <th:block th:text="#{base.maintenance}"/>
+        </div>
+
+        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+            <div class="mdl-tabs vertical-mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--4-col">
+                        <div class="mdl-tabs__tab-bar">
+                            <a href="#tab-lastposition-panel" class="mdl-tabs__tab is-active">
+                                <th:block th:text="#{base.updatelastposition}"/>
+                            </a>
+                            <a href="#tab-updatetransactions-panel" class="mdl-tabs__tab">
+                                <th:block th:text="#{base.checktransactionconsistency}"/>
+                            </a>
+                            <a href="#tab-processsaleorderline-panel" class="mdl-tabs__tab">
+                                <th:block th:text="#{base.processsaleorderline}"/>
+                            </a>
+                            <a href="#tab-resendemail-panel" class="mdl-tabs__tab">
+                                <th:block th:text="#{base.resendemail}"/>
+                            </a>
+                            <a href="#tab-activatepaid-panel" class="mdl-tabs__tab">
+                                <th:block th:text="#{base.activatepaid}"/>
+                            </a>
+                            <a href="#tab-balancethreshold-panel" class="mdl-tabs__tab">
+                                <th:block th:text="#{base.balancethreshold}"/>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--8-col">
+                        <div class="mdl-tabs__panel is-active" id="tab-lastposition-panel">
+                            <div class="mdl-grid mdl-grid--no-spacing">
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                                    Sends week-old transactions to the dead file, and updates all account's last position.
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                    <a th:href="@{/admin/maintenance/updatelastposition}">
+                                        <span class="mdl-button"><i class="material-icons mdl-color-text--blue">settings</i><th:block th:text="#{base.updatelastposition}"/></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-tabs__panel" id="tab-updatetransactions-panel">
+                            <form th:action="@{/admin/maintenance/updatetransactions}" th:object="${account}">
+                                <div class="mdl-grid mdl-grid--no-spacing">
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                                        Check all of the transactions made by an account, or all if not provided, for consistency errors.
+                                        No action is performed automatically, and all inconsistencies are shown in the log area.
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--4-col-desktop enterative-form__field-label" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        Account
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--8-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <div class="mdl-textfield mdl-js-textfield">
+                                            <label class="mdl-textfield__label" for="tAccounts" th:text="#{base.accounts}"/>
+                                            <select class="mdl-textfield__input" id="tAccounts" th:field="*{id}">
+                                                <option value=""></option>
+                                                <option th:each="a : ${account_list}" th:value="${a.id}" th:text="${a.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                        <button class="mdl-button"><i class="material-icons mdl-color-text--blue">settings</i>
+                                            <th:block th:text="#{base.checktransactionconsistency}"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mdl-tabs__panel" id="tab-processsaleorderline-panel">
+                            <form th:action="@{/admin/maintenance/processsaleorderline}" th:object="${saleorderline}">
+                                <div class="mdl-grid mdl-grid--no-spacing">
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                                        Processes a sale order line with the provided status, updating the sale order as well.
+                                        If no status is provided, the current one is used and this action only updates the sale order.
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--4-col-desktop enterative-form__field-label" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        Sale Order Line ID
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--8-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <div class="mdl-textfield mdl-js-textfield">
+                                            <input class="mdl-textfield__input" type="text" id="tSaleOrderLineID" autofocus="autofocus" th:field="*{id}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--4-col-desktop enterative-form__field-label" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        New Status
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--8-col-desktop">
+                                        <div class="mdl-textfield mdl-js-textfield">
+                                            <select class="mdl-textfield__input" id="status" th:field="*{status}">
+                                                <option value=""></option>
+                                                <option th:each="status : ${saleorderline_status}" th:value="${status}" th:text="#{__${status.description}__}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                        <button class="mdl-button"><i class="material-icons mdl-color-text--blue">settings</i>
+                                            <th:block th:text="#{base.processsaleorderline}"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mdl-tabs__panel" id="tab-resendemail-panel">
+                            <form th:action="@{/admin/maintenance/resendemail}" th:object="${saleorder}">
+                                <div class="mdl-grid mdl-grid--no-spacing">
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                                        Resends a sale order email to the account's user's email.
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--4-col-desktop enterative-form__field-label" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        Sale Order ID
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--8-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <div class="mdl-textfield mdl-js-textfield">
+                                            <input class="mdl-textfield__input" type="text" id="tSaleOrderID" autofocus="autofocus" th:field="*{id}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                        <button class="mdl-button"><i class="material-icons mdl-color-text--blue">settings</i>
+                                            <th:block th:text="#{base.resendemail}"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mdl-tabs__panel" id="tab-activatepaid-panel">
+                            <form th:action="@{/admin/maintenance/activatepaid}" th:object="${saleorder}">
+                                <div class="mdl-grid mdl-grid--no-spacing">
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                                        Manually activates a paid sale order.
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--4-col-desktop enterative-form__field-label" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        Sale Order ID
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--8-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <div class="mdl-textfield mdl-js-textfield">
+                                            <input class="mdl-textfield__input" type="text" id="tSaleOrderID" autofocus="autofocus" th:field="*{id}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                        <button class="mdl-button"><i class="material-icons mdl-color-text--blue">settings</i>
+                                            <th:block th:text="#{base.activatepaid}"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mdl-tabs__panel" id="tab-balancethreshold-panel">
+                            <form th:action="@{/admin/maintenance/balancethreshold}" th:object="${account}">
+                                <div class="mdl-grid mdl-grid--no-spacing">
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                                        Updates all accounts with the provided balance threshold.
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--4-col-desktop enterative-form__field-label" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        Balance Threshold
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--8-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <div class="mdl-textfield mdl-js-textfield">
+                                            <input class="mdl-textfield__input enterative-inputmask__decimal" type="text" id="tBalanceThreshold" autofocus="autofocus" th:field="*{balanceThreshold}" />
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                        <button class="mdl-button"><i class="material-icons mdl-color-text--blue">settings</i>
+                                            <th:block th:text="#{base.update}"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+            Log
+        </div>
+        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+            <th:block th:utext="${log}"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

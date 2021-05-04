@@ -1,0 +1,8 @@
+CREATE TABLE voucher (
+	idvoucher BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+	upc VARCHAR(99),
+	card_no VARCHAR(20),
+	amount VARCHAR(12),
+	pin VARCHAR(20)	
+	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

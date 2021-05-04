@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/form}">
+    <body>
+        <th:block layout:fragment="hiddenFields">
+            <input class="mdl-textfield__input" type="hidden" id="id" th:field="*{id}" />
+        </th:block>
+
+        <th:block layout:fragment="form_title">
+            <th:block th:text="#{base.shopcommissiontemplate}" />&nbsp;-&nbsp;<th:block th:text="*{id}" />
+        </th:block>
+
+        <th:block layout:fragment="form_body">
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                        <th:block th:text="#{base.name}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="tName" autofocus="autofocus" th:field="*{name}" />
+                            <label class="mdl-textfield__label" for="tName" th:text="#{base.name}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                <th:block th:text="#{base.commissionperproduct}" />
+            </div>
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout-crudform__container">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--2-col-desktop enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
+                        <th:block th:text="#{base.product}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--2-col-desktop enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
+                        <th:block th:text="#{base.values}" />
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--2-col-desktop mdl-cell--hide-phone mdl-cell--hide-tablet enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
+                        <th:block th:text="#{base.product}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--2-col-desktop mdl-cell--hide-phone mdl-cell--hide-tablet enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
+                        <th:block th:text="#{base.values}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--2-col-desktop mdl-cell--hide-phone mdl-cell--hide-tablet enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
+                        <th:block th:text="#{base.product}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--2-col-desktop mdl-cell--hide-phone mdl-cell--hide-tablet enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
+                        <th:block th:text="#{base.values}" />
+                    </div>
+                    <th:block th:each="line, stat : ${activeObject.lines}">
+                        <input type="hidden" th:field="${activeObject.lines[__${stat.index}__].id}" />
+                        <input type="hidden" th:field="${activeObject.lines[__${stat.index}__].product.id}" />
+                        <input type="hidden" th:field="${activeObject.lines[__${stat.index}__].product.name}" />
+
+                        <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--2-col-desktop enterative-layout-crudform__grid">
+                            <th:block th:text="${line.product.name}" />
+                        </div>
+                        <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout-crudform__grid">
+                            <input class="mdl-textfield__input enterative-inputmask__decimal" id="commission_amount_" th:attrappend="id=${line.id}" onblur="resetValue('commission_percentage_', this, 'commission_amount_')" type="text" th:field="${activeObject.lines[__${stat.index}__].amount}" />
+                        </div>
+                        <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout-crudform__grid">
+                            <input class="mdl-textfield__input enterative-inputmask__percentage" id="commission_percentage_" th:attrappend="id=${line.id}" onblur="resetValue('commission_amount_', this, 'commission_percentage_')" type="text" th:field="${activeObject.lines[__${stat.index}__].percentage}" />
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </th:block>
+    </body>
+</html>

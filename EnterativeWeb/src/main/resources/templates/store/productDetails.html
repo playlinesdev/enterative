@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <div class="mdl-grid mdl-grid--no-spacing" th:object="${product}">
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__title">
+                </div>
+                <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--10-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <th:block th:text="${product.displayName}" />
+                </div>
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <a th:href="@{/store/product/favorite/{id}(id=*{id})}">
+                        <i class="material-icons mdl-color-text--red" th:if="*{favorite eq true}">favorite</i>
+                        <i class="material-icons mdl-color-text--red" th:if="*{favorite eq false}">favorite_border</i>
+                    </a>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-store-details__container" th:unless="${#strings.isEmpty(product.imagem)}">
+                    <img class="enterative-store-grid__image" th:src="${product.imagem}" th:alt="${product.displayName}" />
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-store-details__container" th:if="${#strings.isEmpty(product.imagem)}">
+                    <i class="material-icons enterative-store-grid__no-image" role="presentation">photo_camera</i>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__divider-top enterative-store-details__container">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.name}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                            <th:block th:text="*{displayName}" />
+                        </div>
+                        <div th:if="${product.amount ne null}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.amount}" />
+                        </div>                    
+                        <div th:if="${product.amount ne null}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                            <th:block th:text="${'R$ ' + #numbers.formatDecimal(product.amount,0,'POINT',2,'COMMA')}" />
+                        </div>
+                        <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
+                            <th:block th:text="#{base.category}" />
+                        </div>                    
+                        <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-form__field-readonly">
+                            <th:block th:text="*{category.displayName}" th:if="*{category ne null}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-form__separator"></div>
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__footer">
+                    <a th:href="@{/cart/add/{id}(id=*{id})}"><span class="mdl-button"><i class="material-icons mdl-color-text--green">add_shopping_cart</i><th:block th:text="#{base.buy}" /></span></a>
+                    <a th:href="@{/store}"><span class="mdl-button"><i class="material-icons mdl-color-text--blue">shopping_cart</i><th:block th:text="#{base.returnstore}" /></span></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

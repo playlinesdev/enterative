@@ -1,0 +1,42 @@
+CREATE TABLE cielo_transaction_response (
+    id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    order_number VARCHAR(255),
+    amount INT(4),
+    discount_amount INT(4),
+    checkout_cielo_order_number VARCHAR(255),
+    created_date TIMESTAMP NULL DEFAULT NULL,
+    customer_name VARCHAR(255),
+    customer_phone VARCHAR(255),
+    customer_identity VARCHAR(255),
+    customer_email VARCHAR(255),
+    shipping_type INT(4),
+    shipping_name VARCHAR(255),
+    shipping_price INT(4),
+    shipping_address_zipcode VARCHAR(255),
+    shipping_address_district VARCHAR(255),
+    shipping_address_city VARCHAR(255),
+    shipping_address_state VARCHAR(255),
+    shipping_address_line1 VARCHAR(255),
+    shipping_address_line2 VARCHAR(255),
+    shipping_address_number VARCHAR(255),
+    payment_method_type INT(4),
+    payment_method_brand INT(4),
+    payment_maskedcreditcard VARCHAR(255),
+    payment_installments INT(4),
+    payment_status INT(4),
+    tid VARCHAR(255),
+    test_transaction VARCHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE pagseguro_transaction_response (
+    id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    reference VARCHAR(255),
+    payment_method_type VARCHAR(255),
+    payment_method_code VARCHAR(255),
+    type VARCHAR(255),
+    status VARCHAR(255),
+    code VARCHAR(255),
+    xml TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,0 +1,1 @@
+UPDATE product SET image_path = 'imvu.jpg' WHERE ean = '5051644019080';

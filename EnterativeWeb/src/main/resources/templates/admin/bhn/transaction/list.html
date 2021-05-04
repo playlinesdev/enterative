@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/list}">
+    <body>
+        <th:block layout:fragment="additionalHead" />
+
+        <th:block layout:fragment="listHeader">
+            <form th:action="@{/admin/bhn/transaction}" id="domFormSearch" method="post" th:object="${searchForm}">
+                <div class="mdl-grid mdl-grid--no-spacing enterative-layout-grid--no-spacing mdl-shadow--2dp mdl-color--white">
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title-search">
+                        <b th:text="#{base.search}" />
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.productid}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="id" th:field="*{productId}" />
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <th:block th:text="#{base.transactiondirection}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="tDirection" th:text="#{base.transactiondirection}" />
+                            <select class="mdl-textfield__input" id="tDirection" th:field="*{direction}">
+                                <option value=""></option>
+                                <option th:each="s : ${direction_list}" th:value="${s}" th:text="#{__${s.description}__}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <th:block th:text="#{base.resources}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <label class="mdl-textfield__label" for="tResource" th:text="#{base.resources}" />
+                            <select class="mdl-textfield__input" id="tResource" th:field="*{resource.id}">
+                                <option value=""></option>
+                                <option th:each="a : ${resource_list}" th:value="${a.id}" th:text="#{__${a.type.description}__}" th:if="${!#strings.isEmpty(a.name)}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.primaryaccountnumber}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="primaryAccountNumber" th:field="*{primaryAccountNumber}" />
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.redemptionPin}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="redemptionPin" th:field="*{redemptionPin}" />
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--2-col-tablet mdl-cell--6-col-desktop enterative-form__field-label enterative-layout__text--align-right">
+                        <th:block th:text="#{base.systemtraceauditnumber}" />
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="systemtraceauditnumber" th:field="*{systemTraceAuditNumber}" />
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--6-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-layout__divider-top">
+                        <button type="submit" class="mdl-button">
+                            <i class="material-icons">search</i><th:block th:text="#{base.search}" />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+
+        <th:block layout:fragment="tableTitle">
+            <th:block th:text="#{bhn.transaction}" />
+        </th:block>
+
+        <th:block layout:fragment="tableEmpty">
+            <th:block th:text="#{bhn.transaction.empty_}" />
+        </th:block>
+
+
+        <th:block layout:fragment="tableBody_primary">
+            <a th:href="@{/admin/bhn/transaction/{id}(id=${obj.id})}">
+                <i class="material-icons mdl-list__item-avatar enterative-layout-crudform__avatar">remove_red_eye</i>
+            </a>
+            <span class="mdl-list__item-text-body">
+                <th:block th:text="#{purchase.order.number}" />&nbsp;
+                <th:block th:text="${obj.id}" />
+                <br/>
+                <th:block th:text="#{base.productid}" />&nbsp;
+                <th:block th:text="${obj.productId}" />
+                <br/>
+                <th:block th:text="#{__${obj.direction.description}__}" />                
+            </span>
+        </th:block>        
+    </body>
+</html>

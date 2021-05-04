@@ -1,0 +1,43 @@
+/* Controles Personalizados*/
+.divnavegacaogrupos{
+	display: inline-block;
+ 	height: 100%; 
+	width: 2%;
+}
+
+.botaonavegacaogrupos{
+ 	height: 100%;
+	width: 10%;
+	background-color:gray-100;
+	color:black;
+}
+
+.quadradinhoresponsivo{
+ 	/*height:23.5vw;*/
+	height:auto;
+	width:20vw;	 
+ 	max-height:235px;
+    max-width: 160px;
+	min-height:23px;
+	min-width:16px;
+	display :block; 
+}
+	
+/* Frame */
+.frame {	
+	overflow: hidden;
+	width:auto;
+	height:auto;
+}
+.frame ul {
+	list-style: none;
+	margin: 2;
+	padding: 0;
+	width:auto;
+	height:auto;	
+}
+.frame ul li {
+	float: left;
+	width:auto;
+	height:auto;
+}

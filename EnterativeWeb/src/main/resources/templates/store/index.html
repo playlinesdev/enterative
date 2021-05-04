@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt_br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/padrao}">
+    <body>
+        <div layout:fragment="conteudo">
+            <a th:href="@{/store/search}">
+                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent enterative-form__add-button">
+                    <i class="material-icons" role="presentation">search</i><span class="visuallyhidden" th:text="#{base.search}"></span>
+                </button>
+            </a>
+            <div class="mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-form__title">
+                    <th:block th:text="#{base.store}" />
+                </div>
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__subtitle" th:if="${favorites ne null and !favorites.empty}">
+                    <i class="material-icons" role="presentation">favorite</i>
+                </div>
+                <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--10-col-desktop enterative-layout__text--align-left enterative-form__subtitle" th:if="${favorites ne null and !favorites.empty}">
+                    <th:block th:text="#{base.favorites}" />
+                </div>
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__subtitle" th:if="${favorites ne null and !favorites.empty}">
+                    <a href="#" id="store_favorites" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="store_favorites_icon">keyboard_arrow_down</i>
+                    </a>
+                </div>
+                <div id="store_favorites_submenu" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center" th:if="${favorites ne null and !favorites.empty}">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <th:block th:each="obj, iterStat : ${favorites}">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                                <div class="mdl-grid mdl-grid--no-spacing">
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center" th:unless="${#strings.isEmpty(obj.imagem)}">
+                                        <img class="enterative-store-grid__image" th:src="${obj.imagem}" th:alt="${obj.displayName}" />
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center" th:if="${#strings.isEmpty(obj.imagem)}">
+                                        <i class="material-icons enterative-store-grid__no-image" role="presentation">photo_camera</i>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-store-grid__display-name">
+                                        <th:block th:text="${obj.displayName}" />
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                        <a th:href="@{/store/product/{id}(id=${obj.id})}" class="mdl-button mdl-js-button enterative-store-grid__details-button">
+                                            <i class="material-icons" role="presentation">pageview</i>
+                                            <span th:text="#{base.details}" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+                <div th:if="not ${highlights.empty}" class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                    <i class="material-icons" role="presentation">grade</i>
+                </div>
+                <div th:if="not ${highlights.empty}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--10-col-desktop enterative-layout__text--align-left enterative-form__subtitle">
+                    <th:block th:text="#{base.highlights}" />
+                </div>
+                <div th:if="not ${highlights.empty}" class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                    <a href="#" id="store_details" onclick="toggleSubMenu(this.id);">
+                        <i class="material-icons" id="store_details_icon">keyboard_arrow_down</i>
+                    </a>
+                </div>
+                <div th:if="not ${highlights.empty}" id="store_details_submenu" class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                    <div class="mdl-grid mdl-grid--no-spacing">
+                        <th:block th:each="obj, iterStat : ${highlights}">
+                            <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                                <div class="mdl-grid mdl-grid--no-spacing">
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center"  th:unless="${#strings.isEmpty(obj.product.imagem)}">
+                                        <img class="enterative-store-grid__image" th:src="${obj.product.imagem}" th:alt="${obj.product.displayName}" />
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center" th:if="${#strings.isEmpty(obj.product.imagem)}">
+                                        <i class="material-icons enterative-store-grid__no-image" role="presentation">photo_camera</i>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-store-grid__display-name">
+                                        <th:block th:text="${obj.product.displayName}" />
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                        <a th:href="@{/store/product/{id}(id=${obj.product.id})}" class="mdl-button mdl-js-button enterative-store-grid__details-button">
+                                            <i class="material-icons" role="presentation">pageview</i>
+                                            <span th:text="#{base.details}" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+                    <i class="material-icons" role="presentation">store</i>
+                </div>
+                <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--6-col-tablet mdl-cell--10-col-desktop enterative-layout__text--align-left enterative-form__subtitle">
+                    <th:block th:text="#{base.products}" />
+                </div>
+                <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout__text--align-center enterative-form__subtitle">
+
+                </div>
+                <th:block th:each="obj, iterStat : ${products}">
+                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--3-col-desktop">
+                        <div class="mdl-grid mdl-grid--no-spacing">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center" th:unless="${#strings.isEmpty(obj.imagem)}">
+                                <img class="enterative-store-grid__image" th:src="${obj.imagem}" th:alt="${obj.name}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center" th:if="${#strings.isEmpty(obj.imagem)}">
+                                <i class="material-icons enterative-store-grid__no-image" role="presentation">photo_camera</i>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center enterative-store-grid__display-name">
+                                <th:block th:text="${obj.displayName}" />
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop enterative-layout__text--align-center">
+                                <a th:href="@{/store/product/{id}(id=${obj.id})}" class="mdl-button mdl-js-button enterative-store-grid__details-button">
+                                    <i class="material-icons" role="presentation">pageview</i>
+                                    <span th:text="#{base.details}" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </body>
+</html>
