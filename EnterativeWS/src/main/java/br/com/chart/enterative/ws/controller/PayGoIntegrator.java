@@ -50,14 +50,22 @@ public class PayGoIntegrator extends UserAwareComponent {
     @Autowired
     private AccountTransactionCRUDService accountTransactionService;
 
-    @RequestMapping(value = "/purchage_order/activate")
+    @RequestMapping(value = "/purchase_order/activate")
     public ResponseEntity<ServiceResponse> activatePurchaseOrder(@RequestParam Long purchaseOrderId) {
-        PurchaseOrder po = purchaseOrderService.dao().findOne(purchaseOrderId);
+        ServiceResponse result;
 
-        //accountTransactionCRUDService.dao().findByPurchaseOrderLineId()
-        PurchaseOrderLine purchaseOrderLine = this.purchaseOrderLineService.dao().findOne(purchaseOrderId);
-        ServiceResponse response = this.purchaseOrderService.activateOrder(purchaseOrderId, this.loggedUser());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        PurchaseOrder po = purchaseOrderService.dao().findOne(purchaseOrderId);
+        this.purchaseOrderService.purchaseOrderHasTransactions(po);
+        if(Objects.isNull(po)){
+            result = new ServiceResponse().setMessage("There's no transaction with the given id");
+        }
+        else if(this.purchaseOrderService.purchaseOrderHasTransactions(po)){
+            result = new ServiceResponse().setMessage("There's already a transaction for the given purchase order");
+        }else{
+            result = this.purchaseOrderService.activateOrder(purchaseOrderId, this.loggedUser());
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/purchase_order/create", method = RequestMethod.POST)

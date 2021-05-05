@@ -233,14 +233,24 @@ public class PurchaseOrderCRUDService extends UserAwareCRUDService<PurchaseOrder
         return result;
     }
 
+    public boolean purchaseOrderHasTransactions(PurchaseOrder order){
+        List<AccountTransaction> transactions = new ArrayList<>();
+        for(PurchaseOrderLine line : order.getLines()){
+            AccountTransaction transaction = accountTransactionService.dao().findByPurchaseOrderLineId(line.getId());
+            if(transaction != null)
+                transactions.add(transaction);
+        }
+        return transactions.size() > 0;
+    }
+
     @Transactional(rollbackFor = CRUDServiceException.class)
     public ServiceResponse activateOrder(Long orderID, User user) {
         ServiceResponse result;
         try {
+            PurchaseOrder order = this.dao().findOne(orderID);
             this.dao().activateForID(PURCHASE_ORDER_STATUS.ACTIVE, user, new Date(), orderID);
             this.purchaseOrderLineCRUDService.setStatusForPurchaseOrderID(PURCHASE_ORDER_STATUS.ACTIVE, orderID);
 
-            PurchaseOrder order = this.dao().findOne(orderID);
             result = this.accountTransactionService.processPurchaseOrder(order, PURCHASE_ORDER_STATUS.ACTIVE);
             result.put("entity", this.converter().convert(order));
         } catch (Exception e) {
