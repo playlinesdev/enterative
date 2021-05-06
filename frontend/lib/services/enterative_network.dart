@@ -1,3 +1,4 @@
+import 'package:frontend/notifiers/network_notifier.dart';
 import 'package:yaml/yaml.dart';
 import 'package:dio/dio.dart';
 
@@ -14,10 +15,10 @@ class EnterativeNetwork {
     this._settingsMap = loadYaml(settingsString);
   }
 
-  void ping() async {
+  void ping(void Function(NetworkStatus) onAfterPing) async {
     _dioObject.get('/').catchError((error) {
-      print(error);
-    }).then((value) => print(value));
+      onAfterPing(NetworkStatus.offline);
+    }).then((value) => onAfterPing(NetworkStatus.ready));
   }
 
   Dio get _dioObject {

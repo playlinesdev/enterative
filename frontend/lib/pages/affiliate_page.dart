@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/affiliate_info.dart';
+import 'package:frontend/notifiers/network_notifier.dart';
 import 'package:frontend/pages/widgets/affiliated_logo.dart';
 import 'package:frontend/pages/widgets/be_a_partner.dart';
 import 'package:frontend/pages/widgets/btn_submit.dart';
@@ -43,7 +44,15 @@ class _AffiliatePageState extends State<AffiliatePage> {
   }
 
   Widget notFoundWidget() {
-    return Material(child: Center(child: Text('Não encontrado')));
+    var netNotifier = NetworkNotifier.of(context);
+    return Material(
+        child: Center(
+            child: Column(
+      children: [
+        Text('Não encontrado'),
+        Text(netNotifier.status.toString()),
+      ],
+    )));
   }
 
   Widget mainWidget() {

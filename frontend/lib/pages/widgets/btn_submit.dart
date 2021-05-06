@@ -7,7 +7,7 @@ class BtnSubmit extends StatelessWidget {
     return ElevatedButton(
       child: Text('Teste'),
       onPressed: () {
-        EnterativeNetwork.instance.ping();
+        // EnterativeNetwork.instance.ping();
       },
     );
   }
