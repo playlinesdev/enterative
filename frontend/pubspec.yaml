@@ -27,6 +27,7 @@ dependencies:
   dio: ^4.0.0
   file_picker: ^3.0.1
   google_fonts: ^2.0.0
+  provider: ^5.0.0
   responsive_ui: ^2.1.0
   yaml: ^3.1.0
 

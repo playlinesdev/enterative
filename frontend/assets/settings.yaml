@@ -1,7 +1,5 @@
 api:
-  url: http://localhost:3000
-  host: 192.168.0.204
-  port: 3000
+  url: https://85586b0fa3dd.ngrok.io
 affiliates:
   zix_informatica:
     img: 'assets/img/zix_informatica.jpeg'

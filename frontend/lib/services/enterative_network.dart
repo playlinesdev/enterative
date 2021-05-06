@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:yaml/yaml.dart';
+import 'package:dio/dio.dart';
 
 class EnterativeNetwork {
   late YamlMap _settingsMap;
@@ -15,8 +15,9 @@ class EnterativeNetwork {
   }
 
   void ping() async {
-    var response = await _dioObject.get('/');
-    print(response);
+    _dioObject.get('/').catchError((error) {
+      print(error);
+    }).then((value) => print(value));
   }
 
   Dio get _dioObject {
