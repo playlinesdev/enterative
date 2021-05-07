@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:frontend/notifiers/network_notifier.dart';
 import 'package:yaml/yaml.dart';
 import 'package:dio/dio.dart';
@@ -19,6 +21,16 @@ class EnterativeNetwork {
     _dioObject.get('/').catchError((error) {
       onAfterPing(NetworkStatus.offline);
     }).then((value) => onAfterPing(NetworkStatus.ready));
+  }
+
+  Future<void> uploadFile(String fileName, Uint8List fileBytes) async {
+    var formData = FormData.fromMap({'file': MultipartFile.fromBytes(fileBytes, filename: 'enterative_logo.png')});
+    try {
+      var response = await _dioObject.post('/upload', data: formData);
+      print(response.data);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Dio get _dioObject {

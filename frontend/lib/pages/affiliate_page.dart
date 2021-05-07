@@ -12,6 +12,7 @@ import 'package:frontend/pages/widgets/facade_pitcture.dart';
 import 'package:frontend/pages/widgets/mentes_que_pensam_logo.dart';
 import 'package:frontend/pages/widgets/phones.dart';
 import 'package:frontend/pages/widgets/shop_type.dart';
+import 'package:frontend/services/enterative_network.dart';
 import 'package:frontend/widgets/enterative_input.dart';
 import 'package:frontend/utils/screen.dart';
 import 'package:responsive_ui/responsive_ui.dart';
@@ -44,15 +45,24 @@ class _AffiliatePageState extends State<AffiliatePage> {
   }
 
   Widget notFoundWidget() {
-    var netNotifier = NetworkNotifier.of(context);
     return Material(
+        color: Colors.black87,
         child: Center(
             child: Column(
-      children: [
-        Text('Não encontrado'),
-        Text(netNotifier.status.toString()),
-      ],
-    )));
+          children: [
+            Text('Não encontrado'),
+            ElevatedButton(
+                onPressed: () {
+                  uploadTest();
+                },
+                child: Text('Upload'))
+          ],
+        )));
+  }
+
+  void uploadTest() async {
+    var file = await rootBundle.load('assets/img/enterative_logo.png');
+    EnterativeNetwork.instance.uploadFile('enterative_logo.png', file.buffer.asUint8List());
   }
 
   Widget mainWidget() {
