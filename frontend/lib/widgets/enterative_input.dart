@@ -3,13 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EnterativeInput extends StatelessWidget {
   final String label;
+  final Function(String) onChanged;
   final TextStyle labelStyle = GoogleFonts.roboto(
     fontWeight: FontWeight.bold,
     color: Color(0xff555555),
     fontSize: 15,
   );
 
-  EnterativeInput(this.label);
+  EnterativeInput(this.label, {required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class EnterativeInput extends StatelessWidget {
           Container(
             height: 28,
             child: TextFormField(
+              onChanged: onChanged,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 6),
                 border: OutlineInputBorder(),

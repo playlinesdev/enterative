@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/enterative_network.dart';
+import 'package:frontend/notifiers/affiliate/form.dart';
 
 class BtnSubmit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: Text('Teste'),
-      onPressed: () {
-        // EnterativeNetwork.instance.ping();
-      },
+    var form = AffiliateForm.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          child: Text('Enviar'),
+          onPressed: () {
+            print(form.razaoSocial);
+            print(form.nomeResponsavel);
+            print(form.ramoAtividade);
+          },
+        ),
+      ),
     );
   }
 }

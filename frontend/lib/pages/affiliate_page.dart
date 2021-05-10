@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/affiliate_info.dart';
+import 'package:frontend/notifiers/affiliate/form.dart';
 import 'package:frontend/notifiers/network_notifier.dart';
 import 'package:frontend/pages/widgets/affiliated_logo.dart';
 import 'package:frontend/pages/widgets/be_a_partner.dart';
@@ -69,7 +70,7 @@ class _AffiliatePageState extends State<AffiliatePage> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: Tools.screenWidth(context, 20),
+          horizontal: Tools.screenWidth(context, 10),
           vertical: Tools.screenHeight(context, 5),
         ),
         child: ListView.separated(
@@ -165,42 +166,59 @@ class _AffiliatePageState extends State<AffiliatePage> {
   }
 
   Widget razaoSocialWidget() {
-    return Container(child: EnterativeInput('Razão Social'));
+    return Container(
+        child: EnterativeInput('Razão Social',
+            onChanged: (value) => AffiliateForm.of(context, listen: false).razaoSocial = value));
   }
 
   Widget fantasiaWidget() {
-    return Container(child: EnterativeInput('Fantasia'));
+    return Container(
+        child: EnterativeInput('Fantasia',
+            onChanged: (value) => AffiliateForm.of(context, listen: false).fantasia = value));
   }
 
   Widget cnpjWidget() {
-    return Container(child: EnterativeInput('Cnpj'));
+    return Container(
+        child: EnterativeInput('Cnpj', onChanged: (value) => AffiliateForm.of(context, listen: false).cnpj = value));
   }
 
   Widget inscricaoEstadualWidget() {
-    return Container(child: EnterativeInput('Inscrição Estadual'));
+    return Container(
+        child: EnterativeInput('Inscrição Estadual',
+            onChanged: (value) => AffiliateForm.of(context, listen: false).inscricaoEstadual = value));
   }
 
   Widget inscricaoMunicipalWidget() {
-    return Container(child: EnterativeInput('Inscrição Municipal'));
+    return Container(
+        child: EnterativeInput('Inscrição Municipal',
+            onChanged: (value) => AffiliateForm.of(context, listen: false).inscricaoMunicipal = value));
   }
 
   Widget nomeResponsavel() {
-    return Container(child: EnterativeInput('Nome Completo do Responsável'));
+    return Container(
+        child: EnterativeInput('Nome Completo do Responsável',
+            onChanged: (value) => AffiliateForm.of(context, listen: false).nomeResponsavel = value));
   }
 
   Widget cpfWidget() {
-    return Container(child: EnterativeInput('CPF'));
+    return Container(
+        child: EnterativeInput('CPF', onChanged: (value) => AffiliateForm.of(context, listen: false).cpf = value));
   }
 
   Widget emailResponsavel() {
-    return Container(child: EnterativeInput('E-mail do responsável'));
+    return Container(
+        child: EnterativeInput('E-mail do responsável',
+            onChanged: (value) => AffiliateForm.of(context, listen: false).emailResponsavel = value));
   }
 
   Widget linkWidget() {
-    return Container(child: EnterativeInput('Link'));
+    return Container(
+        child: EnterativeInput('Link', onChanged: (value) => AffiliateForm.of(context, listen: false).link = value));
   }
 
   Widget ramoAtividadeWidget() {
-    return Container(child: EnterativeInput('Ramo de Atividade'));
+    return Container(
+        child: EnterativeInput('Ramo de Atividade',
+            onChanged: (value) => AffiliateForm.of(context, listen: false).ramoAtividade = value));
   }
 }
