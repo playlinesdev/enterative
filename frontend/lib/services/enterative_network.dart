@@ -18,7 +18,7 @@ class EnterativeNetwork {
   }
 
   void ping(void Function(NetworkStatus) onAfterPing) async {
-    _dioObject.get('/').catchError((error) {
+    netObject.get('/').catchError((error) {
       onAfterPing(NetworkStatus.offline);
     }).then((value) => onAfterPing(NetworkStatus.ready));
   }
@@ -26,14 +26,16 @@ class EnterativeNetwork {
   Future<void> uploadFile(String fileName, Uint8List fileBytes) async {
     var formData = FormData.fromMap({'file': MultipartFile.fromBytes(fileBytes, filename: 'enterative_logo.png')});
     try {
-      var response = await _dioObject.post('/upload', data: formData);
+      var response = await netObject.post('/upload', data: formData);
       print(response.data);
     } catch (e) {
       print(e);
     }
   }
 
-  Dio get _dioObject {
+  // Dio get emptyNetObject => Dio();
+
+  Dio get netObject {
     var url = _settingsMap['api']['url'];
     print(url);
     return Dio(BaseOptions(baseUrl: url));

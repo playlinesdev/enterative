@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/notifiers/affiliate/form.dart';
+import 'package:frontend/notifiers/affiliate/affiliate_form.dart';
 import 'package:frontend/notifiers/network_notifier.dart';
 import 'package:frontend/pages/affiliate_page.dart';
 import 'package:frontend/services/enterative_network.dart';
@@ -34,9 +34,7 @@ class EnterativeFrontendApp extends StatelessWidget {
                       EnterativeNetwork.instance.ping((netStatus) {
                         NetworkNotifier.of(context, listen: false).setNetworkStatus(netStatus);
                       });
-                    return Consumer<NetworkNotifier>(
-                      builder: (context, value, child) => AffiliatePage(initialRoute),
-                    );
+                    return AffiliatePage(initialRoute);
                   }),
                 ),
               ];
