@@ -45,7 +45,7 @@ async function bootstrap() {
   Logger.log(`Api listening https on port ${httpsPort}`)
 
   https.createServer({
-    cert: process.env.SSL_CERTIFICATE_PATH
+    pfx: fs.readFileSync(process.env.SSL_CERTIFICATE_PATH)
   }, server).listen(httpsPort);
 }
 bootstrap();
