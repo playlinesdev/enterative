@@ -1,5 +1,6 @@
+environment: dev
 api:
-  url: https://0fc27cab7621.ngrok.io
+  url: https://192.168.0.204:3443
 affiliates:
   zix_informatica:
     img: 'assets/img/zix_informatica.jpeg'

@@ -43,6 +43,9 @@ async function bootstrap() {
 
   let httpsPort = process.env.HTTPS_PORT ?? 3443
   Logger.log(`Api listening https on port ${httpsPort}`)
-  https.createServer(httpsOptions, server).listen(httpsPort);
+
+  https.createServer({
+    cert: process.env.SSL_CERTIFICATE_PATH
+  }, server).listen(httpsPort);
 }
 bootstrap();

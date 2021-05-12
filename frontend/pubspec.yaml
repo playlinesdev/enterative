@@ -29,6 +29,7 @@ dependencies:
   google_fonts: ^2.0.0
   provider: ^5.0.0
   responsive_ui: ^2.1.0
+  url_strategy: ^0.2.0
   yaml: ^3.1.0
 
 dev_dependencies:

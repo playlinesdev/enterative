@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+typedef InputValidationFunction = String? Function(String?);
+
 class EnterativeInput extends StatelessWidget {
   final String label;
+  final Function(String) onChanged;
+  final bool isRequired;
+  // final GlobalKey<FormState>? formKey;
+  final List<InputValidationFunction> validations;
   final TextStyle labelStyle = GoogleFonts.roboto(
     fontWeight: FontWeight.bold,
     color: Color(0xff555555),
     fontSize: 15,
   );
 
-  EnterativeInput(this.label);
+  EnterativeInput(this.label, {required this.onChanged, this.isRequired = true, this.validations = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +25,27 @@ class EnterativeInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            // padding: EdgeInsets.only(bottom: 3, top: 18),
             child: Row(
               children: [
                 Text(label, style: labelStyle),
-                SizedBox(width: 5),
-                Text('*', style: labelStyle.copyWith(color: Colors.red))
+                if (isRequired) SizedBox(width: 5),
+                if (isRequired) Text('*', style: labelStyle.copyWith(color: Colors.red))
               ],
             ),
           ),
-          Container(
-            height: 28,
+          LimitedBox(
+            maxHeight: 44,
             child: TextFormField(
+              onChanged: onChanged,
+              validator: (value) {
+                for (var validation in validations) {
+                  var result = validation(value);
+                  return result;
+                }
+                return null;
+              },
               decoration: InputDecoration(
+                helperText: ' ',
                 contentPadding: EdgeInsets.symmetric(horizontal: 6),
                 border: OutlineInputBorder(),
               ),
