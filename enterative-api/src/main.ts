@@ -44,6 +44,9 @@ async function bootstrap() {
   let httpsPort = process.env.HTTPS_PORT ?? 3443
   Logger.log(`Api listening https on port ${httpsPort}`)
 
+  Logger.log(`SSL_CERTIFICATE_PATH: ${process.env.SSL_CERTIFICATE_PATH}`)
+  Logger.log(`SSL_CERTIFICATE_PASSWORD: ${process.env.SSL_CERTIFICATE_PASSWORD}`)
+
   https.createServer({
     pfx: fs.readFileSync(process.env.SSL_CERTIFICATE_PATH),
     passphrase: process.env.SSL_CERTIFICATE_PASSWORD ?? ''
