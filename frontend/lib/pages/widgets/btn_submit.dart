@@ -25,7 +25,7 @@ class BtnSubmit extends StatelessWidget {
     var isValid = formKey.currentState!.validate();
     if (isValid) {
       var form = AffiliateForm.of(context, listen: false);
-      EnterativeNetwork.instance.netObject.post(
+      EnterativeNetwork.instance.emptyNetObject.post(
         '/affiliate/register',
         data: {
           'razaoSocial': form.razaoSocial,

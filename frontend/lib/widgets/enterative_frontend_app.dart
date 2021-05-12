@@ -25,7 +25,6 @@ class EnterativeFrontendApp extends StatelessWidget {
               print(settings.arguments);
             },
             onGenerateInitialRoutes: (initialRoute) {
-              print(initialRoute);
               return [
                 MaterialPageRoute(
                   builder: (ctx) => Consumer<NetworkNotifier>(builder: (context, value, child) {
