@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get()
+  @Get('ping')
   getHello(): string {
     Logger.log('pinging...')
     return this.appService.ping();

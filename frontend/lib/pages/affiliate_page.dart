@@ -35,7 +35,10 @@ class _AffiliatePageState extends State<AffiliatePage> {
     return FutureBuilder<String>(
       future: rootBundle.loadString('assets/settings.yaml', cache: false),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) return LinearProgressIndicator();
+        if (snapshot.connectionState != ConnectionState.done)
+          return Column(
+            children: [LinearProgressIndicator()],
+          );
         var afInfo = AffiliateInfo.getFromRoute(snapshot.data!, widget.affiliateId);
         if (afInfo == null) return NotFoundAffiliatePage();
         affiliateInfo = afInfo;
@@ -74,11 +77,13 @@ class _AffiliatePageState extends State<AffiliatePage> {
       height: 150,
       alignment: Alignment.center,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          MentesQuePensamLogo(50),
+          MentesQuePensamLogo(45),
+          Spacer(),
           AffiliatedLogo(height: 130, imgPath: affiliateInfo.imgPath),
+          Spacer(),
         ],
       ),
     );
@@ -115,7 +120,16 @@ class _AffiliatePageState extends State<AffiliatePage> {
             Responsive(children: [Div(child: Phones(), colL: 4, colM: 4, colS: 4)]),
             Responsive(children: [Div(child: FacadePicture(), colL: 4, colM: 4, colS: 4)]),
             Responsive(children: [Div(child: Captcha(), colL: 4, colM: 4, colS: 4)]),
-            Responsive(children: [Div(child: BtnSubmit(formKey: _formKey), colL: 4, colM: 4, colS: 4)]),
+            Responsive(children: [
+              Div(
+                child: BtnSubmit(formKey: _formKey),
+                colL: 4,
+                colM: 4,
+                colS: 4,
+                offsetL: 4,
+                offsetM: 4,
+              )
+            ]),
           ],
         ),
       ),

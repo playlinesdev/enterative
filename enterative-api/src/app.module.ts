@@ -5,14 +5,16 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AffiliateModule } from './affiliate/affiliate.module';
 import { ConfigModule } from '@nestjs/config';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'web'), renderPath: '/web'
+      rootPath: join(__dirname, '..', 'web'), renderPath: '/'
     }),
     AffiliateModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

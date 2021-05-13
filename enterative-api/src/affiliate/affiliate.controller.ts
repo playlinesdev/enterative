@@ -6,17 +6,16 @@ import * as nodemailer from 'nodemailer'
 @ApiTags('Affiliate')
 @Controller('affiliate')
 export class AffiliateController {
-    emailSettings: { host: string; port: number; auth: { user: string; pass: string; }; secure: string; };
+    emailSettings: { host: string; port: number; auth: { user: string; pass: string; }; };
 
     constructor() {
         this.emailSettings = {
-            host: 'smtp.office365.com',
-            port: 587,
+            host: process.env.SMTP_EMAIL_HOST,
+            port: Number(process.env.SMTP_EMAIL_PORT ?? '0'),
             auth: {
-                user: 'rafante2@gmail.com',
-                pass: 'Mel05072103'
+                user: process.env.SMTP_EMAIL_PORT,
+                pass: process.env.SMTP_EMAIL_PASSWORD
             },
-            secure: 'STARTTLS'
         }
     }
 
