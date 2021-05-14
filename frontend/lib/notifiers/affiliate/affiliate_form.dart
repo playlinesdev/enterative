@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class AffiliateForm with ChangeNotifier {
   String razaoSocial = '';
   String fantasia = '';
-  String tipoLoja = '';
+  String tipoLoja = 'Física';
   String cnpj = '';
   String inscricaoEstadual = '';
   String inscricaoMunicipal = '';

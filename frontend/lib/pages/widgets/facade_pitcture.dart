@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/notifiers/affiliate/affiliate_form.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final TextStyle labelStyle = GoogleFonts.roboto(
@@ -38,8 +39,10 @@ class _FacadePictureState extends State<FacadePicture> {
 
   void uploadFile() async {
     var result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.image);
+    var form = AffiliateForm.of(context, listen: false);
     setState(() {
       fileBytes = result!.files.single.bytes!;
+      form.facadePicture = fileBytes;
     });
   }
 }

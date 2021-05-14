@@ -25,6 +25,17 @@ class EnterativeNetwork {
     });
   }
 
+  static FormData getFormData(
+      {Map<String, String>? parameters, Uint8List? file, String? fileParamName, String? fileName}) {
+    Map<String, dynamic> map = Map.from(parameters!);
+    if (file != null) {
+      if (fileParamName == null) throw new Exception('If a file is provided, fileParamName is mandatory');
+      map.putIfAbsent(
+          fileParamName, () => MultipartFile.fromBytes(file, filename: fileName != null ? fileName : fileParamName));
+    }
+    return FormData.fromMap(map);
+  }
+
   Future<void> uploadFile(String fileName, Uint8List fileBytes) async {
     var formData = FormData.fromMap({'file': MultipartFile.fromBytes(fileBytes, filename: 'enterative_logo.png')});
     try {
