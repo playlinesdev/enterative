@@ -1,46 +1,41 @@
-import { Body, Controller, Get, Logger, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
-import * as nodemailer from 'nodemailer'
+import { AffiliateService } from './affiliate.service';
 
 @ApiTags('Affiliate')
 @Controller('affiliate')
 export class AffiliateController {
-    emailSettings: { host: string; port: number; auth: { user: string; pass: string; }; };
 
-    constructor() {
-        this.emailSettings = {
-            host: process.env.SMTP_EMAIL_HOST,
-            port: Number(process.env.SMTP_EMAIL_PORT ?? '0'),
-            auth: {
-                user: process.env.SMTP_EMAIL_PORT,
-                pass: process.env.SMTP_EMAIL_PASSWORD
-            },
-        }
-    }
+    constructor(private affiliateService: AffiliateService) { }
 
     @Post('register')
-    async registerAffiliate(@Body() data) {
-        Logger.log(data)
-        let transporter = nodemailer.createTransport({
-            host: this.emailSettings.host,
-            port: this.emailSettings.port,
-            secure: false, // true for 465, false for other ports
-            auth: this.emailSettings.auth
-        });
-
-        let info = await transporter.sendMail({
-            from: '"Fred Foo 👻" <rafante2@hotmail.com>', // sender address
-            to: "rafanteapp@hotmail.com", // list of receivers
-            subject: "Hello ✔", // Subject line
-            text: "Hello world?", // plain text body
-            html: "<b>Hello world?</b>", // html body
-        });
+    @UseInterceptors(FileInterceptor('facadePicture'))
+    async registerAffiliate(@UploadedFile() file: Express.Multer.File, @Body() data: any) {
+        let requestBodyValidation = this.validateRequestBody(data)
+        if (!!requestBodyValidation)
+            throw new HttpException(requestBodyValidation, HttpStatus.BAD_REQUEST)
+        return this.affiliateService.registerAffiliate(data, file)
     }
 
-    @Post('upload')
-    @UseInterceptors(FileInterceptor('file'))
-    uploadFile(@UploadedFile() file: Express.Multer.File) {
-        console.log(file);
+    validateRequestBody(data: any): String {
+        if (!data) return 'Invalid empty request'
+        if (!data.razaoSocial) return 'Campo obrigatório: Razão social'
+        if (!data.fantasia) return 'Campo obrigatório: Fantasia'
+        if (!data.tipoLoja) return 'Campo obrigatório: Tipo de Loja'
+        if (!data.cnpj) return 'Campo obrigatório: Cnpj'
+        // if (!data.inscricaoEstadual) return 'Campo obrigatório: Inscrição Estadual'
+        // if (!data.inscricaoMunicipal) return 'Campo obrigatório: Inscrição Municipal'
+        if (!data.cpf) return 'Campo obrigatório: Cpf'
+        if (!data.nomeResponsavel) return 'Campo obrigatório: Nome do Responsável'
+        if (!data.emailResponsavel) return 'Campo obrigatório: Email do Responsável'
+        if (!data.link) return 'Campo obrigatório: Link'
+        if (!data.ramoAtividade) return 'Campo obrigatório: Ramo de Atividade'
+        if (!data.enderecoRua) return 'Campo obrigatório: Endereço - Rua'
+        if (!data.enderecoBairro) return 'Campo obrigatório: Endereço - Bairro'
+        if (!data.enderecoCidade) return 'Campo obrigatório: Endereço - Cidade'
+        if (!data.enderecoEstado) return 'Campo obrigatório: Endereço - Estado'
+        if (!data.enderecoCep) return 'Campo obrigatório: Endereço - Cep'
+        if (!data.enderecoPais) return 'Campo obrigatório: Endereço - País'
     }
 }
