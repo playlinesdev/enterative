@@ -1,4 +1,4 @@
-environment: dev
+environment: prd
 api:
   url: https://sandbox.enterativeapk.tk:5000
 affiliates:

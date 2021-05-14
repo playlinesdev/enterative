@@ -10,9 +10,7 @@ import { MailerModule } from './mailer/mailer.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'web'), renderPath: '/'
-    }),
+    ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', 'web'), renderPath: '/zix_informatica' }),
     AffiliateModule,
     MailerModule,
   ],
